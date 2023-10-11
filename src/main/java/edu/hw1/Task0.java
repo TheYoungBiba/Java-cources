@@ -5,7 +5,9 @@ import org.apache.logging.log4j.Logger;
 
 final public class Task0 {
     private Task0() {}
-    Logger LOGGER = LogManager.getLogger();
+
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public void helloWorldDisplay() {
         LOGGER.info("Hello, World!");
     }
