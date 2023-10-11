@@ -2,10 +2,10 @@ package edu.hw1;
 
 public class Task8 {
     private Task8() {}
-    protected boolean isValidIndex(int[][] chessBoard, int i, int j) {
+    protected static boolean isValidIndex(int[][] chessBoard, int i, int j) {
         return (i >= 0 && i < chessBoard.length && j >= 0 && j < chessBoard[0].length);
     }
-    public boolean knightBoardCapture(int[][] chessBoard) {
+    public static boolean knightBoardCapture(int[][] chessBoard) {
         int[][] shift = {
             {2, 1}, {1, 2}, {2, -1}, {1, -2},
         };

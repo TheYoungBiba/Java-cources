@@ -2,7 +2,7 @@ package edu.hw1;
 
 final public class Task4 {
     private Task4 () {}
-    public String fixString(String str) {
+    public static String fixString(String str) {
         char[] arrOfChars = str.toCharArray();
         for (int i = 0; i < str.length() - 1; i += 2) {
             char temp = arrOfChars[i];

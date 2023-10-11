@@ -1,8 +1,8 @@
 package edu.hw1;
 
 public class Task7 {
-    Task7() {}
-    static public int rotateRight(int val, int shift) {
+    private Task7() {}
+    public static int rotateRight(int val, int shift) {
         String binStr = Integer.toBinaryString(val);
         if (shift > binStr.length())
             while (shift > binStr.length())
@@ -10,7 +10,7 @@ public class Task7 {
         String shiftedRightNum = binStr.substring(binStr.length() - shift) + binStr.substring(0, binStr.length() - shift);
         return Integer.parseInt(shiftedRightNum, 2);
     }
-    static public int rotateLeft(int val, int shift) {
+    public static int rotateLeft(int val, int shift) {
         String binStr = Integer.toBinaryString(val);
         if (shift > binStr.length())
             while (shift > binStr.length())

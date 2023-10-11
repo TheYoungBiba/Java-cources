@@ -2,13 +2,13 @@ package edu.hw1;
 
 final public class Task5 {
     private Task5() {}
-    private boolean isPalindrome (String str) {
+    private static boolean isPalindrome (String str) {
         for (int i = 0; i < str.length() - 1; i++)
             if(str.charAt(i) != str.charAt(str.length() - 1 - i))
                 return false;
         return true;
     }
-    private String getOffspring(String str) {
+    private static String getOffspring(String str) {
         String offspring = new String();
         for (int i = 0; i < str.length() - 1; i += 2) {
             Integer couple = Character.getNumericValue(str.charAt(i)) + Character.getNumericValue(str.charAt(i + 1));
@@ -18,7 +18,7 @@ final public class Task5 {
             offspring += str.charAt(str.length() - 1);
         return offspring;
     }
-    public boolean isPalindromeDescendant(int var) {
+    public static boolean isPalindromeDescendant(int var) {
         String str = String.valueOf(var);
         if (!isPalindrome(str)) {
             String offspring = getOffspring(str);
