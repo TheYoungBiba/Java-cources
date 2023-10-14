@@ -25,7 +25,7 @@ public class Task8 {
         for (int i = 0; i < chessBoard.length; i++) {
             for (int j = 0; j < chessBoard[0].length; j++) {
                 if (chessBoard[i][j] == 1) {
-                    if(isAttacked(chessBoard, i, j)) {
+                    if (isAttacked(chessBoard, i, j)) {
                         return false;
                     }
                 }
