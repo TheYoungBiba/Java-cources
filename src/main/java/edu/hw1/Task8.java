@@ -7,19 +7,26 @@ public class Task8 {
         return (i >= 0 && i < chessBoard.length && j >= 0 && j < chessBoard[0].length);
     }
 
-    public static boolean knightBoardCapture(int[][] chessBoard) {
+    private static boolean isAttacked(int[][] chessBoard, int i, int j) {
         final int[][] shift = {
             {2, 1}, {1, 2}, {2, -1}, {1, -2},
         };
+        for (int k = 0; k < shift.length; k++) {
+            if (isValidIndex(chessBoard, i + shift[k][0], j + shift[k][1])) {
+                if (chessBoard[i + shift[k][0]][j + shift[k][1]] == 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean knightBoardCapture(int[][] chessBoard) {
         for (int i = 0; i < chessBoard.length; i++) {
             for (int j = 0; j < chessBoard[0].length; j++) {
                 if (chessBoard[i][j] == 1) {
-                    for (int k = 0; k < shift.length; k++) {
-                        if (isValidIndex(chessBoard, i + shift[k][0], j + shift[k][1])) {
-                            if (chessBoard[i + shift[k][0]][j + shift[k][1]] == 1) {
-                                return false;
-                            }
-                        }
+                    if(isAttacked(chessBoard, i, j)) {
+                        return false;
                     }
                 }
             }
