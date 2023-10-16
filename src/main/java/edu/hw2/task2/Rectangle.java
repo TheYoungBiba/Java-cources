@@ -4,6 +4,8 @@ public class Rectangle {
     private int width;
     private int height;
 
+    public Rectangle() {}
+
     void setWidth(int width) {
         this.width = width;
     }
