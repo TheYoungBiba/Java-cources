@@ -25,7 +25,7 @@ public final class PopularCommandExecutor {
                 break;
             } catch (Exception e) {
                 if (i == maxAttempts - 1) {
-                    LOGGER.info(e.getMessage());
+                    throw new ConnectionException("Number of attempts exceeded.");
                 }
             }
         }
