@@ -3,19 +3,19 @@ package edu.hw2.task3;
 import java.util.Random;
 
 public class DefaultConnectionManager implements ConnectionManager {
+    public Random isFaultyConnection;
     public Random isNotConnected;
-    public Random isFailureConnection;
 
-    public DefaultConnectionManager(Random isFailureConnection, Random isNotConnected) {
+    public DefaultConnectionManager(Random isFaultyConnection, Random isNotConnected) {
+        this.isFaultyConnection = isFaultyConnection;
         this.isNotConnected = isNotConnected;
-        this.isFailureConnection = isFailureConnection;
     }
 
     @Override
     public Connection getConnection() {
-        if (isFailureConnection.nextBoolean()) {
-            return new FailureConnection();
+        if (isFaultyConnection.nextBoolean()) {
+            return new FaultyConnection(isNotConnected);
         }
-        return new StableConnection(isNotConnected);
+        return new StableConnection();
     }
 }
