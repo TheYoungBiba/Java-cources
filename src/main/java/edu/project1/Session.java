@@ -16,14 +16,14 @@ public class Session {
     }
 
     public GuessResult guess(Character guess) {
-        Character.toLowerCase(guess);
-        if (!Character.isLetter(guess)) {
+        Character temp = Character.toLowerCase(guess);
+        if (!Character.isLetter(temp)) {
             throw new IllegalArgumentException("The word includes only letters. The input with symbols is incorrect.");
         }
-        if (answer.indexOf(guess) != -1) {
+        if (answer.indexOf(temp) != -1) {
             for (int i = 0; i < answer.length(); i++) {
-                if (guess.equals(answer.charAt(i))) {
-                    userAnswer[i] = guess;
+                if (temp.equals(answer.charAt(i))) {
+                    userAnswer[i] = temp;
                 }
             }
             if (new String(userAnswer).equals(answer)) {
