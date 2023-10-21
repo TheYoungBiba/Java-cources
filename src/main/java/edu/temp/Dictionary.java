@@ -1,7 +1,0 @@
-package edu.temp;
-
-import org.jetbrains.annotations.NotNull;
-
-public interface Dictionary {
-    @NotNull String randomWord();
-}

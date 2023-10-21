@@ -1,5 +1,7 @@
 package edu.project1;
 
+import org.jetbrains.annotations.NotNull;
+
 public interface Dictionary {
-    String randomWord();
+    @NotNull String randomWord();
 }

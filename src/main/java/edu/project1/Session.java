@@ -1,58 +1,45 @@
 package edu.project1;
 
-import java.util.Scanner;
-
 public class Session {
-    private String answer;
-    private int maxCountOfAttempts;
+    private final String answer;
+    private final int maxAttempts;
     private char[] userAnswer;
-    private int currentCountOfAttempts;
+    private int attempts = 0;
 
-    public Session(String answer, int maxCountOfAttempts) {
+    public Session(String answer, int maxAttempts) {
         this.answer = answer.toLowerCase();
-        this.maxCountOfAttempts = maxCountOfAttempts;
-        this.currentCountOfAttempts = maxCountOfAttempts;
+        this.maxAttempts = maxAttempts;
         this.userAnswer = new char[answer.length()];
-        for (int i = 0; i < answer.length(); i++) {
-            userAnswer[i] = '*';
+        for (int i = 0; i < userAnswer.length; i++) {
+            userAnswer[i] = '\u0000';
         }
     }
 
-    private boolean isAnswered(char[] userAnswer) {
-        return new String(userAnswer).equals(answer);
-    }
-
-    private void openLetter(char rightLetter) {
-        for (int i = 0; i < answer.length(); i++) {
-            Character temp = answer.charAt(i);
-            if (temp.equals(rightLetter)) {
-                userAnswer[i] = temp;
-            }
+    public GuessResult guess(Character guess) {
+        Character.toLowerCase(guess);
+        if (!Character.isLetter(guess)) {
+            throw new IllegalArgumentException("The word includes only letters. The input with symbols is incorrect.");
         }
-    }
-
-    public void startSession() {
-        ConsoleDisplay.startMessage(new String(userAnswer), maxCountOfAttempts);
-        Scanner scanner = new Scanner(System.in);
-        char letter;
-        while (!isAnswered(userAnswer) && currentCountOfAttempts > 0) {
-            String tempStr = scanner.next();
-            if (tempStr.equals("!!!")) {
-                break;
+        if (answer.indexOf(guess) != -1) {
+            for (int i = 0; i < answer.length(); i++) {
+                if (guess.equals(answer.charAt(i))) {
+                    userAnswer[i] = guess;
+                }
             }
-            letter = Character.toLowerCase(tempStr.charAt(0));
-            if (answer.indexOf(letter) != -1) {
-                openLetter(letter);
-                ConsoleDisplay.rightGuessMessage(new String(userAnswer), currentCountOfAttempts);
-            } else {
-                currentCountOfAttempts--;
-                ConsoleDisplay.wrongGuessMessage(new String(userAnswer), currentCountOfAttempts);
+            if (new String(userAnswer).equals(answer)) {
+                return new Win(userAnswer, attempts);
             }
-        }
-        if (isAnswered(userAnswer)) {
-            ConsoleDisplay.winMessage(answer);
+            return new SuccessfulGuess(userAnswer, attempts);
         } else {
-            ConsoleDisplay.looseMessage(answer);
+            attempts++;
+            if (attempts == maxAttempts) {
+                return new Defeat(answer, attempts);
+            }
+            return new FailedGuess(userAnswer, attempts);
         }
+    }
+
+    public GuessResult giveUp() {
+        return new Defeat(answer, attempts);
     }
 }

@@ -1,4 +1,4 @@
-package edu.temp;
+package edu.project1;
 
 import org.jetbrains.annotations.NotNull;
 
