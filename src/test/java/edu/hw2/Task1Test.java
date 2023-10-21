@@ -6,9 +6,12 @@ import edu.hw2.task1.Exponent;
 import edu.hw2.task1.Multiplication;
 import edu.hw2.task1.Negate;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import static org.junit.jupiter.api.Assertions.*;
+
 
 public class Task1Test {
     @ParameterizedTest
@@ -46,5 +49,13 @@ public class Task1Test {
     @CsvSource(value = {"-1, 2", "3, 4"}, ignoreLeadingAndTrailingWhitespace = true)
     void exponentOverloadedTest(double a, double b) {
         Assertions.assertEquals(Math.pow(a, b), new Exponent(new Constant(a), b).evaluate());
+    }
+
+    @Test
+    void exponentExceptionTest() {
+        Exception e = assertThrows(IllegalArgumentException.class, () -> {
+            new Exponent(new Constant(-7.525), 1.490).evaluate();
+        });
+        assertEquals("Incorrect input (exception: -7.525 and 1.490).", e.getMessage());
     }
 }
