@@ -8,11 +8,11 @@ import org.apache.logging.log4j.Logger;
 public class FaultyConnection implements Connection {
     private Random isNotConnected;
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public FaultyConnection(Random isNotConnected) {
         this.isNotConnected = isNotConnected;
     }
-
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public void execute(String command) throws ConnectionException {
         if (isNotConnected.nextBoolean()) {
