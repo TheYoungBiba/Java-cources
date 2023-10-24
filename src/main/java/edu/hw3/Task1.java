@@ -1,17 +1,16 @@
 package edu.hw3;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class Task1 {
     private Task1() {}
 
 //    Метод который создает экземпляр словаря и заполняет его буквами латинского алфавита из константного массива букв
-    private static Map initCipherDictionary() {
+    private static HashMap<Character, Character> initCipherDictionary() {
         final char[] ALPHABET = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
             'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
-        Map<Character, Character> cipherDictionary = new HashMap<>();
+        HashMap<Character, Character> cipherDictionary = new HashMap<>();
 
         for (int i = 0; i < ALPHABET.length; i++) {
             cipherDictionary.put(ALPHABET[i], ALPHABET[ALPHABET.length - i - 1]);
@@ -26,7 +25,7 @@ public class Task1 {
     }
 
     public static String atbashCipher(String uncipheredStr) {
-        Map<Character, Character> cipherDictionary = initCipherDictionary();
+        HashMap<Character, Character> cipherDictionary = initCipherDictionary();
 
         StringBuilder cipheredStr = new StringBuilder();
 
