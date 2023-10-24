@@ -45,25 +45,5 @@ public class Hangman {
             printState(result);
         }
     }
-//    public void run() {
-//        Session session = new Session(answer, maxAttempts);
-//        LOGGER.info("Guess a letter:");
-//        while (true) {
-//            String guess = scanner.nextLine();
-//            if (guess.equals("give up")) {
-//                printState(session.giveUp());
-//                break;
-//            }
-//            if (guess.length() != 1) {
-//                throw new IllegalArgumentException("Expected \"char\", but not \"String\".");
-//            }
-//            GuessResult result = tryGuess(session, guess);
-//            if (result instanceof Win || result instanceof Defeat) {
-//                printState(result);
-//                break;
-//            }
-//            printState(result);
-//        }
-//    }
 }
 
