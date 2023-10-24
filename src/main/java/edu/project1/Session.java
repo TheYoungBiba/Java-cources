@@ -15,17 +15,21 @@ public class Session {
         }
     }
 
+    private void openLetter(Character letter) {
+        for (int i = 0; i < answer.length(); i++) {
+            if (letter.equals(answer.charAt(i))) {
+                userAnswer[i] = letter;
+            }
+        }
+    }
+
     public GuessResult guess(Character guess) {
         Character temp = Character.toLowerCase(guess);
         if (!Character.isLetter(temp)) {
             throw new IllegalArgumentException("The word includes only letters. The input with symbols is incorrect.");
         }
         if (answer.indexOf(temp) != -1) {
-            for (int i = 0; i < answer.length(); i++) {
-                if (temp.equals(answer.charAt(i))) {
-                    userAnswer[i] = temp;
-                }
-            }
+            openLetter(temp);
             if (new String(userAnswer).equals(answer)) {
                 return new Win(userAnswer, attempts);
             }
