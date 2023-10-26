@@ -15,12 +15,11 @@ public class Task2Test {
         });
     }
 
-    static Arguments[] rectangles() {
-        return new Arguments[]{
-            Arguments.of("()()()", new LinkedList<String>().add("()", "()", "()")),
-            Arguments.of()
-        };
-    }
+//    static Arguments[] rectangles() {
+//        return new Arguments[]{
+//            Arguments.of("()()()", new LinkedList<String>().add("()", "()", "()")),
+//            Arguments.of()
+//        };
+//    }
 
-    void
 }
