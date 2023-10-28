@@ -6,7 +6,7 @@ public class Task2 {
     private Task2() {}
 
     private static int countOfOccurrences(char symbol, String inString) {
-        return inString.length() - inString.replace(((Character)symbol).toString(), "").length();
+        return inString.length() - inString.replace(((Character) symbol).toString(), "").length();
     }
 
     private static boolean firstStepOfValidation(String input) {

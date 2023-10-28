@@ -25,12 +25,14 @@ public class Task4 {
         }
         HashMap<Integer, String> romanNums = initRomanNumsHashMap();
         StringBuilder tempRomanNum = new StringBuilder();
-        for (int degree = 0; arabianNum > 0; degree++) {
-            int key = arabianNum % 10 * (int)Math.pow(10, degree);
+        final int SHIFT_ON_ONE_TEN = 10;
+        Integer tempArabianNum = arabianNum;
+        for (int degree = 0; tempArabianNum > 0; degree++) {
+            int key = tempArabianNum % SHIFT_ON_ONE_TEN * ((int) Math.pow(SHIFT_ON_ONE_TEN, degree));
             if (key != 0) {
                 tempRomanNum.insert(0, romanNums.get(key));
             }
-            arabianNum /= 10;
+            tempArabianNum /= SHIFT_ON_ONE_TEN;
         }
         return tempRomanNum.toString();
     }

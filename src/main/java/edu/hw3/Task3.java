@@ -8,7 +8,7 @@ public class Task3 {
     private Task3() {}
 
     public static Map<String, Integer> freqDict(Collection<String> inputList) {
-        HashMap<String, Integer> frequencyDictionary= new HashMap<>();
+        HashMap<String, Integer> frequencyDictionary = new HashMap<>();
         for (String word: inputList) {
             Integer tempCounterValue = frequencyDictionary.get(word);
             if (tempCounterValue != null) {

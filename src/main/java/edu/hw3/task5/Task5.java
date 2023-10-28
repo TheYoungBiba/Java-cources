@@ -8,7 +8,7 @@ public class Task5 {
 
     private Task5() {}
 
-    private static Contact contactInit (String name) {
+    private static Contact contactInit(String name) {
         int indexOfSpace = name.indexOf(" ");
         if (indexOfSpace == -1) {
             return new Contact(name);
