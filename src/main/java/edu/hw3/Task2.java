@@ -9,7 +9,7 @@ public class Task2 {
         return inString.length() - inString.replace(((Character)symbol).toString(), "").length();
     }
 
-    private static boolean isValid(String input) {
+    private static boolean firstStepOfValidation(String input) {
         int countOfOpenBruckets = countOfOccurrences('(', input);
         int countOfClosedBruckets = countOfOccurrences(')', input);
         return (countOfOpenBruckets == countOfClosedBruckets
@@ -27,8 +27,7 @@ public class Task2 {
                     if (tempUnclusterizedStr.charAt(j) == '(') {
                         if (j == startIndex) {
                             return i;
-                        }
-                        else {
+                        } else {
                             tempUnclusterizedStr.setCharAt(i, ']');
                             tempUnclusterizedStr.setCharAt(j, '[');
                         }
@@ -41,7 +40,7 @@ public class Task2 {
     }
 
     public static LinkedList<String> clusterize(String unclusterizedStr) {
-        if (!isValid(unclusterizedStr)) {
+        if (!firstStepOfValidation(unclusterizedStr)) {
             throw new IllegalArgumentException("Incorrect count of opened and closed brackets in input string.");
         }
         LinkedList<String> clusters = new LinkedList<>();
