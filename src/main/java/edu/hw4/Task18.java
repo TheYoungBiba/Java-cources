@@ -25,19 +25,9 @@ public class Task18 {
         }
     };
 
-//    public static Animal heaviestFish(List<Animal>... listsOfAnimals) {
-//       Animal heaviestFish = Arrays.stream(listsOfAnimals)
-//           .map(list -> list.stream()
-//               .filter(animal -> animal.type().equals(Type.FISH))
-//               .max(weightCmp)
-//               .orElse(null))
-//           .max(weightCmp).orElse(null);
-//       return heaviestFish;
-//    }
-
     public static Animal heaviestFish(List<Animal>... listsOfAnimals) {
         return Arrays.stream(listsOfAnimals)
-            .flatMap(List::stream)
+            .flatMap(list -> list.stream())
             .filter(animal -> animal.type().equals(Type.FISH))
             .max(weightCmp)
             .orElse(null);
