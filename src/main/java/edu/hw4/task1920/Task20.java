@@ -23,9 +23,6 @@ public class Task20 {
                 if (ValidationError.invalidName(animal) != null) {
                     stringBuilder.append("name, ");
                 }
-                if (!stringBuilder.isEmpty()) {
-                    stringBuilder.delete(stringBuilder.length() - 2, stringBuilder.length());
-                }
                 return stringBuilder.toString();
             })).entrySet().stream().filter(s -> !s.getValue().isEmpty())
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));

@@ -17,10 +17,8 @@ public class Task19 {
                 Set<ValidationError> errors = new HashSet<>();
                 Collections.addAll(
                     errors,
-                    ValidationError.invalidHeight(animal),
-                    ValidationError.invalidWeight(animal),
-                    ValidationError.invalidAge(animal),
-                    ValidationError.invalidName(animal)
+                    ValidationError.invalidHeight(animal), ValidationError.invalidWeight(animal),
+                    ValidationError.invalidAge(animal), ValidationError.invalidName(animal)
                 );
                 return errors.stream().filter(Objects::nonNull).collect(Collectors.toSet());
             })).entrySet().stream().filter(s -> !s.getValue().isEmpty()).collect(Collectors
