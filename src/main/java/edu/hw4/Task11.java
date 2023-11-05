@@ -7,6 +7,7 @@ public class Task11 {
     private Task11() {}
 
     public static List<Animal> toListOfBitesAnd100Cm(List<Animal> listOfAnimals) {
-        return listOfAnimals.stream().filter(animal -> (animal.bites() && animal.height() > 100)).toList();
+        final int STO = 100;
+        return listOfAnimals.stream().filter(animal -> (animal.bites() && animal.height() > STO)).toList();
     }
 }

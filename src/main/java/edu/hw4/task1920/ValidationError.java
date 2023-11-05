@@ -8,7 +8,8 @@ public class ValidationError extends RuntimeException {
     }
 
     public static ValidationError invalidName(Animal animal) {
-        if (animal.name().length() > 100) {
+        final int STO = 100;
+        if (animal.name().length() > STO) {
             return new ValidationError("Too long name");
         }
         return null;

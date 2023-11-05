@@ -7,6 +7,7 @@ public class Task9 {
     private Task9() {}
 
     public static Integer countOfPaws(List<Animal> listOfAnimals) {
-        return listOfAnimals.stream().reduce(0, (tempCountOfPaws, animal) -> tempCountOfPaws + animal.paws(), Integer::sum);
+        return listOfAnimals.stream()
+            .reduce(0, (tempCountOfPaws, animal) -> tempCountOfPaws + animal.paws(), Integer::sum);
     }
 }
