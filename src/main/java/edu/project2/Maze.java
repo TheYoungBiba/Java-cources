@@ -1,46 +1,5 @@
 package edu.project2;
 
-//public final class Maze {
-//    private int width;
-//    private int height;
-//    private int[][] preRenderedGrid;
-//    private int startCol;
-//    private int exitCol;
-//
-//    private boolean isValidCol(int col) {
-//        return col < width && col >= 0;
-//    }
-//
-//    public Maze(Generator algorithm, int height, int width, int startCol, int exitCol) {
-//        this.height = height;
-//        this.width = width;
-//        int[][] preRenderedGrid = algorithm.generateMaze(height, width);
-//        if (!isValidCol(startCol)) {
-//            throw new IllegalArgumentException("Incorrect start point");
-//        }
-//        if (!isValidCol(exitCol)) {
-//            throw new IllegalArgumentException("Incorrect exit point");
-//        }
-//        this.startCol = startCol;
-//        this.exitCol = exitCol;
-//        preRenderedGrid[0][startCol * 2 + 1] = 0;
-//        preRenderedGrid[preRenderedGrid.length - 1][exitCol * 2 + 1] = 0;
-//        this.preRenderedGrid = preRenderedGrid;
-//    }
-//
-//    public int getStartCol() {
-//        return startCol;
-//    }
-//
-//    public int getExitCol() {
-//        return exitCol;
-//    }
-//
-//    public int[][] getPreRenderedGrid() {
-//        return preRenderedGrid;
-//    }
-//}
-
 public final class Maze {
     private int width;
     private int height;
@@ -52,8 +11,15 @@ public final class Maze {
     public Maze(Generator algorithm, int height, int width) {
         this.height = height;
         this.width = width;
-        int[][] preRenderedGrid = algorithm.generateMaze(height, width);
-        this.preRenderedGrid = preRenderedGrid;
+        int[][] tempGrid = algorithm.generateMaze(height, width);
+        this.preRenderedGrid = tempGrid;
+    }
+
+    private boolean inTop(Coordinate point) {
+        return (point.x() == 0 && point.y() == 0)
+            || (point.x() == preRenderedGrid.length - 1 && point.y() == 0)
+            || (point.y() == preRenderedGrid.length - 1 && point.x() == 0)
+            || (point.x() == point.y() && point.x() == preRenderedGrid.length - 1);
     }
 
     private boolean isValidPoint(Coordinate point) {
@@ -65,10 +31,7 @@ public final class Maze {
             && point.y() > 0 && point.y() < preRenderedGrid[0].length - 1)) {
             return false;
         }
-        if ((point.x() == 0 && point.y() == 0)
-            || (point.x() == preRenderedGrid.length - 1 && point.y() == 0)
-            || (point.y() == preRenderedGrid.length - 1 && point.x() == 0)
-            || (point.x() == point.y() && point.x() == preRenderedGrid.length - 1)) {
+        if (inTop(point)) {
             return false;
         }
         return true;
@@ -77,7 +40,7 @@ public final class Maze {
     private boolean isNearEmptyness(Coordinate point) {
         final int[] xShift = {1, 0, -1, 0};
         final int[] yShift = {0, 1, 0, -1};
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < xShift.length; i++) {
             int shiftedX = point.x() + xShift[i];
             int shiftedY = point.y() + yShift[i];
             if (shiftedX < preRenderedGrid.length && shiftedX >= 0
@@ -98,10 +61,9 @@ public final class Maze {
             } else if (preRenderedGrid[startPoint.x()][startPoint.y()] == 0) {
                 preRenderedGrid[startPoint.x()][startPoint.y()] = 2;
                 this.startPoint = startPoint;
-            } else {
-                throw new IllegalArgumentException("Illegal start point.");
             }
-        } else {
+        }
+        if (this.startPoint == null) {
             throw new IllegalArgumentException("Illegal start point.");
         }
     }
@@ -114,10 +76,9 @@ public final class Maze {
             } else if (preRenderedGrid[exitPoint.x()][exitPoint.y()] == 0) {
                 preRenderedGrid[exitPoint.x()][exitPoint.y()] = 2;
                 this.exitPoint = exitPoint;
-            } else {
-                throw new IllegalArgumentException("Illegal exit point.");
             }
-        } else {
+        }
+        if (this.exitPoint == null) {
             throw new IllegalArgumentException("Illegal exit point.");
         }
     }

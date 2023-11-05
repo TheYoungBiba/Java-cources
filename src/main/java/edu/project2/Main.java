@@ -1,9 +1,9 @@
 package edu.project2;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Scanner;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -11,8 +11,12 @@ public class Main {
     Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Maze maze = new Maze(new EllerAlgorithm(11), 5, 5);
-        maze.setPoints(new Coordinate(0, 1), new Coordinate(10, 9));
+        final int randomSeedForMyMaze = 11;
+        final int squareSideLength = 5;
+        final Coordinate startOnLeftTop = new Coordinate(0, 1);
+        final Coordinate exitInRightBottom = new Coordinate(10, 9);
+        Maze maze = new Maze(new EllerAlgorithm(randomSeedForMyMaze), squareSideLength, squareSideLength);
+        maze.setPoints(startOnLeftTop, exitInRightBottom);
         List<Coordinate> path = new PathFinder(maze).solve();
         String render = new RenderMaze().render(maze);
         String renderPath = new RenderMaze().render(maze, path);

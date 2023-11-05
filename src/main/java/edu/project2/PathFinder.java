@@ -8,8 +8,8 @@ public class PathFinder implements Solver {
     private int rows;
     private int cols;
     private int[][] preRenderedMaze;
-    private final int[] SHIFT_CHECK_X = {-1, 0, 1, 0};
-    private final int[] SHIFT_CHECK_Y = {0, 1, 0, -1};
+    private final int[] shiftCheckX = {-1, 0, 1, 0};
+    private final int[] shiftCheckY = {0, 1, 0, -1};
     private int startX;
     private int startY;
     private int endX;
@@ -40,7 +40,8 @@ public class PathFinder implements Solver {
     }
 
     private boolean isValid(int[][] preRenderedMaze, boolean[][] isVisited, int x, int y) {
-        return (x >= 0 && x < rows && y >= 0 && y < cols && (preRenderedMaze[x][y] == 0 || preRenderedMaze[x][y] == 2) && !isVisited[x][y]);
+        return (x >= 0 && x < rows && y >= 0 && y < cols
+            && (preRenderedMaze[x][y] == 0 || preRenderedMaze[x][y] == 2) && !isVisited[x][y]);
     }
 
     private List<Coordinate> foundedPath() {
@@ -59,9 +60,9 @@ public class PathFinder implements Solver {
     }
 
     private void nearPointCheck(int x, int y) {
-        for (int i = 0; i < 4; i++) {
-            int newX = x + SHIFT_CHECK_X[i];
-            int newY = y + SHIFT_CHECK_Y[i];
+        for (int i = 0; i < shiftCheckX.length; i++) {
+            int newX = x + shiftCheckX[i];
+            int newY = y + shiftCheckY[i];
             if (isValid(preRenderedMaze, isVisited, newX, newY)) {
                 isVisited[newX][newY] = true;
                 queue.add(new Coordinate(newX, newY));

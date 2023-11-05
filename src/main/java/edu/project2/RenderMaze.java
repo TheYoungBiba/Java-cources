@@ -6,6 +6,10 @@ import java.util.List;
 public class RenderMaze implements Renderer {
     public RenderMaze() {}
 
+    final String wey = " ● ";
+    final String wall = "███";
+    final String pass = "   ";
+
     @Override
     public String render(Maze maze) {
         StringBuilder renderedMaze = new StringBuilder();
@@ -14,11 +18,11 @@ public class RenderMaze implements Renderer {
         for (int i = 0; i < preRenderedGrid.length; i++) {
             for (int j = 0; j < preRenderedGrid[i].length; j++) {
                 if (preRenderedGrid[i][j] == 2) {
-                    renderedMaze.append(" ● ");
+                    renderedMaze.append(wey);
                 } else if (preRenderedGrid[i][j] == 1) {
-                    renderedMaze.append("███");
+                    renderedMaze.append(wall);
                 } else {
-                    renderedMaze.append("   ");
+                    renderedMaze.append(pass);
                 }
             }
             renderedMaze.append("\n");
@@ -38,12 +42,11 @@ public class RenderMaze implements Renderer {
         for (int i = 0; i < preRenderedGrid.length; i++) {
             for (int j = 0; j < preRenderedGrid[i].length; j++) {
                 if (preRenderedGrid[i][j] == 1) {
-                    renderedMaze.append("███");
+                    renderedMaze.append(wall);
                 } else if (path.contains(new Coordinate(i, j))) {
-                    renderedMaze.append(" ● ");
-                }
-                else {
-                    renderedMaze.append("   ");
+                    renderedMaze.append(wey);
+                } else {
+                    renderedMaze.append(pass);
                 }
             }
             renderedMaze.append("\n");
