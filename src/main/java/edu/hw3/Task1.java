@@ -7,16 +7,20 @@ public class Task1 {
 
 //    Метод который создает экземпляр словаря и заполняет его буквами латинского алфавита из константного массива букв
     private static HashMap<Character, Character> initCipherDictionary() {
-        char[] ALPHABET = new char[26];
+        final int englishAlphabetLength = 26;
+        final int intOfA = 97;
+        final int intOfZ = 123;
+        final int shift = 97;
+        char[] alphabet = new char[englishAlphabetLength];
 
-        for (int i = 97; i < 123; i++) {
-            ALPHABET[i - 97] = ((char) i);
+        for (int i = intOfA; i < intOfZ; i++) {
+            alphabet[i - shift] = ((char) i);
         }
 
         HashMap<Character, Character> cipherDictionary = new HashMap<>();
 
-        for (int i = 0; i < ALPHABET.length; i++) {
-            cipherDictionary.put(ALPHABET[i], ALPHABET[ALPHABET.length - i - 1]);
+        for (int i = 0; i < alphabet.length; i++) {
+            cipherDictionary.put(alphabet[i], alphabet[alphabet.length - i - 1]);
         }
 
         return cipherDictionary;
