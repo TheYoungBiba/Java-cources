@@ -7,8 +7,11 @@ public class Task1 {
 
 //    Метод который создает экземпляр словаря и заполняет его буквами латинского алфавита из константного массива букв
     private static HashMap<Character, Character> initCipherDictionary() {
-        final char[] ALPHABET = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
-            'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+        char[] ALPHABET = new char[26];
+
+        for (int i = 97; i < 123; i++) {
+            ALPHABET[i - 97] = ((char) i);
+        }
 
         HashMap<Character, Character> cipherDictionary = new HashMap<>();
 

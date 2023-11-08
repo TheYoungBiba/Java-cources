@@ -1,6 +1,7 @@
 package edu.hw3.task8;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BackwardIterator<T> implements Iterator<T> {
@@ -8,8 +9,8 @@ public class BackwardIterator<T> implements Iterator<T> {
     private int reverseIndex;
 
     public BackwardIterator(List<T> elements) {
-        this.elements = elements;
-        this.reverseIndex = elements.size() - 1;
+        this.elements = new LinkedList<>(elements);
+        this.reverseIndex = this.elements.size() - 1;
     }
 
     @Override
