@@ -1,4 +1,4 @@
-package edu.hw4.task1920;
+package edu.hw4.task19_20;
 
 import edu.hw4.animal.Animal;
 import java.util.Collections;
