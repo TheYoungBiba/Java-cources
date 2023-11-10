@@ -2,15 +2,19 @@ package edu.hw5;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        String str = "2022-03-12, 09:20 - 2022-03-12, 23:50";
-//        String temp = str.replace(", ", "T");
-//        System.out.println(str);
-//        System.out.println(temp);
-//        Task1.toInstantFormat(str).forEach(System.out::println);
-        System.out.println(Duration.between(Instant.parse("2022-03-12T20:20:00Z"), Instant.parse("2022-03-12T23:50:00Z"))
-            .plus(Duration.between(Instant.parse("2022-04-01T21:30:00Z"), Instant.parse("2022-04-02T01:20:00Z"))));
+//        for (int yaer = 1823; yaer < 3000; yaer++) {
+//            System.out.println(Task2.fridayThe13th(yaer));
+//        }
+//        System.out.println(Task2.fridayThe13th(2023));
+//        System.out.println(LocalDate.of(2023, 1, 13).compareTo(LocalDate.of(2023, 10, 13)));
+//        System.out.println(Task2.findFirstFridayThe13th(LocalDate.now()));
+        System.out.println(Task2.findFirstFridayThe13th(LocalDate.now().plusYears(2)));
     }
 }
