@@ -6,9 +6,9 @@ import java.util.regex.Pattern;
 public class Task6 {
     private Task6() {}
 
-    public static boolean subsequenceFinder(String S, String T) {
-        Pattern subsequenceFinderPattern = Pattern.compile(S);
-        Matcher matcher = subsequenceFinderPattern.matcher(T);
+    public static boolean subsequenceFinder(String s, String t) {
+        Pattern subsequenceFinderPattern = Pattern.compile(s);
+        Matcher matcher = subsequenceFinderPattern.matcher(t);
         return matcher.find();
     }
 }
