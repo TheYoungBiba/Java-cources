@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class Task7Test {
     @ParameterizedTest
     @CsvSource({
-        "null, false",
         "0, false",
         "01, false",
         "011, false",

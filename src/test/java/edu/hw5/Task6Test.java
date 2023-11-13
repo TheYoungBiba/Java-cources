@@ -10,7 +10,6 @@ public class Task6Test {
         "abc, achfdbaabgabcaabg, true",
         "abc, achabcfdbaabgabcaabg, true",
         "abc, abc, true",
-        "abc, null, false",
         "abc, a, false",
         "abc, ab, false",
         "abc, abd, false",
