@@ -95,11 +95,11 @@ public class Task3Test {
             Arguments.of("2020-12-2", Optional.of(LocalDate.parse("2020-12-02"))),
             Arguments.of("1/3/1976", Optional.of(LocalDate.parse("1976-03-01"))),
             Arguments.of("1/3/20", Optional.of(LocalDate.parse("2020-03-01"))),
-            Arguments.of("tomorrow", Optional.of(LocalDate.parse("2023-11-13"))),
-            Arguments.of("today", Optional.of(LocalDate.parse("2023-11-12"))),
-            Arguments.of("yesterday", Optional.of(LocalDate.parse("2023-11-11"))),
-            Arguments.of("1 day ago", Optional.of(LocalDate.parse("2023-11-11"))),
-            Arguments.of("2234 days ago", Optional.of(LocalDate.parse("2017-09-30")))
+            Arguments.of("tomorrow", Optional.of(LocalDate.now().plusDays(1))),
+            Arguments.of("today", Optional.of(LocalDate.now())),
+            Arguments.of("yesterday", Optional.of(LocalDate.now().minusDays(1))),
+            Arguments.of("1 day ago", Optional.of(LocalDate.now().minusDays(1))),
+            Arguments.of("4 days ago", Optional.of(LocalDate.now().minusDays(4)))
         );
     }
 
