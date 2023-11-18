@@ -1,4 +1,4 @@
-package edu.hw6.task1;
+package edu.hw6;
 
 import edu.hw6.Task4;
 import java.io.IOException;
