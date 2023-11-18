@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+@SuppressWarnings("MultipleStringLiterals")
 public class Task2 {
     private Task2() {}
 

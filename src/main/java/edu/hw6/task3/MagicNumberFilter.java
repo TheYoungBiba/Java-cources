@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 public interface MagicNumberFilter {
+
+    @SuppressWarnings("MagicNumber")
     static AbstractFilter magicNumber(int... magicBytes) {
         return path -> {
             try {

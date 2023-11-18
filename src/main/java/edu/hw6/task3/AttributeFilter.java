@@ -3,9 +3,15 @@ package edu.hw6.task3;
 import java.nio.file.Files;
 
 public interface AttributeFilter extends AbstractFilter {
-    AbstractFilter regularFile = Files::isRegularFile;
+    static AbstractFilter regularFile() {
+        return Files::isRegularFile;
+    }
 
-    AbstractFilter readableFile = Files::isReadable;
+    static AbstractFilter readableFile() {
+        return Files::isReadable;
+    }
 
-    AbstractFilter writableFile = Files::isWritable;
+    static AbstractFilter writableFile() {
+        return Files::isWritable;
+    }
 }
