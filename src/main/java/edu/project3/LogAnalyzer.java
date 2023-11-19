@@ -85,7 +85,7 @@ public class LogAnalyzer {
                     return Long.compare(o1.getValue(), o2.getValue());
                 }
             }.reversed())
-            .limit(THREE)
+            .limit(three)
             .map(stringLongEntry -> new MostRequestedResource(stringLongEntry.getKey(), stringLongEntry.getValue()))
             .toList();
     }
@@ -109,7 +109,7 @@ public class LogAnalyzer {
                     return Long.compare(o1.getValue(), o2.getValue());
                 }
             }.reversed())
-            .limit(THREE)
+            .limit(three)
             .map(integerLongEntry -> new MostFrequentCode(toEnumVal(integerLongEntry.getKey()),
                 integerLongEntry.getValue()))
             .toList();
