@@ -13,7 +13,7 @@ public class Renderer {
 
     private static final int ELEVEN = 11;
 
-    private static String str = "\n|";
+    private static String str = "|\n";
 
     private Renderer() {}
 
@@ -132,7 +132,7 @@ public class Renderer {
             for (int i = String.valueOf(code.count()).length(); i < 11; i++) {
                 stringBuilder.append(" ");
             }
-            stringBuilder.append("|\n");
+            stringBuilder.append(str);
         }
         return stringBuilder.toString();
     }

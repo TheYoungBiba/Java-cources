@@ -12,6 +12,7 @@ public class Main {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    @SuppressWarnings("MissingSwitchDefault")
     public static void main(String[] args) throws IOException {
         List<Path> listOfPath = PathFinder.config(args);
         ZonedDateTime from = null;
@@ -31,7 +32,6 @@ public class Main {
                     format = Format.valueOf(args[i + 1]);
                     break;
                 }
-                default: throw new IllegalArgumentException();
             }
         }
         LogAnalyzer analyzer = new LogAnalyzer(listOfPath, from, to);
