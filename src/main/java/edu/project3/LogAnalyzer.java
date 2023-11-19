@@ -17,6 +17,8 @@ public class LogAnalyzer {
 
     private final ZonedDateTime to;
 
+    private final int three = 3;
+
     public LogAnalyzer(List<Path> paths, ZonedDateTime from, ZonedDateTime to) {
         this.paths = paths;
         this.from = from;
@@ -83,15 +85,10 @@ public class LogAnalyzer {
                     return Long.compare(o1.getValue(), o2.getValue());
                 }
             }.reversed())
-            .limit(3)
+            .limit(THREE)
             .map(stringLongEntry -> new MostRequestedResource(stringLongEntry.getKey(), stringLongEntry.getValue()))
             .toList();
     }
-
-    public record MostRequestedResource(String name, long count) {}
-
-
-
 
     public List<MostFrequentCode> determinateMostFrequentCode() throws IOException {
         HashMap<Integer, Long> codes = new HashMap<>();
@@ -112,7 +109,7 @@ public class LogAnalyzer {
                     return Long.compare(o1.getValue(), o2.getValue());
                 }
             }.reversed())
-            .limit(3)
+            .limit(THREE)
             .map(integerLongEntry -> new MostFrequentCode(toEnumVal(integerLongEntry.getKey()),
                 integerLongEntry.getValue()))
             .toList();
@@ -127,6 +124,9 @@ public class LogAnalyzer {
         }
         throw new RuntimeException("Unknown code");
     }
+
+    public record MostRequestedResource(String name, long count) {}
+
 
     public record MostFrequentCode(LogRecord.HttpStatusCode statusCode, long count) {}
 }
