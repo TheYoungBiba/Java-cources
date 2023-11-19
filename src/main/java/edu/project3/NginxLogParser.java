@@ -50,6 +50,7 @@ public class NginxLogParser implements LogParser {
         }
     }
 
+    @SuppressWarnings("parameterassignment")
     private LogRecord.Request parseRequest(String type, String resource, String protocol) {
         try {
             protocol = protocol.replace('/', '_').replace('.', '_');
@@ -66,13 +67,14 @@ public class NginxLogParser implements LogParser {
     @Override
     public LogRecord parseLine(String line) {
         Pattern pattern = Pattern.compile(
-            "^(?<IP>((?:\\d{1,3}\\.){3}\\d{1,3})|((?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4})|" +
-            "(((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?))) - " +
-            "(?<login>\\S+) \\[(?<dateTime>(?<date>(?<dayOfMonth>\\d{2})/(?<month>[A-Z][a-z]{2})/(?<year>\\d{4})):" +
-            "(?<time>(?<hours>\\d{2}):(?<mins>\\d{2}):(?<secs>\\d{2})) (?<timeZone>\\+\\d{4}))\\] " +
-            "\"(?<request>(?<type>GET|POST|PUT|DELETE|HEAD|CONNECT|PRI) (?<resource>\\S+) " +
-            "(?<protocol>HTTP/\\d\\.\\d))\" (?<code>\\d{3}) (?<byteSize>\\d+) \"(?<referer>\\S+)\" " +
-            "\"(?<userAgent>.+)\"$");
+            "^(?<IP>((?:\\d{1,3}\\.){3}\\d{1,3})|((?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4})|"
+                + "(((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?)::((?:[0-9A-Fa-f]{1,4}(?::[0-9A-Fa-f]{1,4})*)?))) - "
+                + "(?<login>\\S+) \\[(?<dateTime>(?<date>(?<dayOfMonth>\\d{2})/"
+                + "(?<month>[A-Z][a-z]{2})/(?<year>\\d{4})):"
+                + "(?<time>(?<hours>\\d{2}):(?<mins>\\d{2}):(?<secs>\\d{2})) (?<timeZone>\\+\\d{4}))\\] "
+                + "\"(?<request>(?<type>GET|POST|PUT|DELETE|HEAD|CONNECT|PRI) (?<resource>\\S+) "
+                + "(?<protocol>HTTP/\\d\\.\\d))\" (?<code>\\d{3}) (?<byteSize>\\d+) \"(?<referer>\\S+)\" "
+                + "\"(?<userAgent>.+)\"$");
         Matcher matcher = pattern.matcher(line);
         if (!matcher.matches()) {
             throw new RuntimeException("Invalid line.");
