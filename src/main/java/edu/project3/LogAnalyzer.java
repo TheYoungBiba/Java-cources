@@ -91,14 +91,7 @@ public class LogAnalyzer {
     public record MostRequestedResource(String name, long count) {}
 
 
-    private LogRecord.HttpStatusCode toEnumVal(int code) {
-        for (LogRecord.HttpStatusCode enumCode: LogRecord.HttpStatusCode.values()) {
-            if (enumCode.getCode() == code) {
-                return enumCode;
-            }
-        }
-        throw new RuntimeException("Unknown code");
-    }
+
 
     public List<MostFrequentCode> determinateMostFrequentCode() throws IOException {
         HashMap<Integer, Long> codes = new HashMap<>();
@@ -120,9 +113,20 @@ public class LogAnalyzer {
                 }
             }.reversed())
             .limit(3)
-            .map(integerLongEntry -> new MostFrequentCode(toEnumVal(integerLongEntry.getKey()), integerLongEntry.getValue()))
+            .map(integerLongEntry -> new MostFrequentCode(toEnumVal(integerLongEntry.getKey()),
+                integerLongEntry.getValue()))
             .toList();
 
     }
+
+    private LogRecord.HttpStatusCode toEnumVal(int code) {
+        for (LogRecord.HttpStatusCode enumCode: LogRecord.HttpStatusCode.values()) {
+            if (enumCode.getCode() == code) {
+                return enumCode;
+            }
+        }
+        throw new RuntimeException("Unknown code");
+    }
+
     public record MostFrequentCode(LogRecord.HttpStatusCode statusCode, long count) {}
 }

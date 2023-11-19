@@ -5,6 +5,16 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 public class Renderer {
+    private static final int THREE = 3;
+
+    private static final int EIGHT = 8;
+
+    private static final int FIVE = 5;
+
+    private static final int ELEVEN = 11;
+
+    private static String str = "\n|";
+
     private Renderer() {}
 
     public static String mainInformationRender(List<Path> listOfPath, ZonedDateTime from, ZonedDateTime to,
@@ -12,16 +22,16 @@ public class Renderer {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("#### Общая информация\n\n");
         int lengthOfFiles = listOfPath.stream()
-            .reduce(0, (integer, path) -> integer + path.getFileName().toString().length() + 3, Integer::sum);
+            .reduce(0, (integer, path) -> integer + path.getFileName().toString().length() + THREE, Integer::sum);
         String tempLine = "|-----------------------|";
         for (int i = 0; i < lengthOfFiles; i++) {
             tempLine = tempLine + "-";
         }
         String temp = "|Метрика                |Значение";
-        for (int i = 8; i < lengthOfFiles; i++) {
+        for (int i = EIGHT; i < lengthOfFiles; i++) {
             temp = temp + " ";
         }
-        stringBuilder.append(temp + "|\n");
+        stringBuilder.append(temp + str);
 
         stringBuilder.append(tempLine + "|");
         stringBuilder.append("\n");
@@ -36,37 +46,37 @@ public class Renderer {
             for (int i = from.toString().length(); i < lengthOfFiles; i++) {
                 stringBuilder.append(" ");
             }
-            stringBuilder.append("|\n");
+            stringBuilder.append(str);
         } else {
             stringBuilder.append("|Начальная дата         | -");
             for (int i = 0; i < lengthOfFiles - 2; i++) {
                 stringBuilder.append(" ");
             }
-            stringBuilder.append("|\n");
+            stringBuilder.append(str);
         }
         if (from != null) {
             stringBuilder.append("|Конечная дата          |" + to);
             for (int i = to.toString().length(); i < lengthOfFiles; i++) {
                 stringBuilder.append(" ");
             }
-            stringBuilder.append("|\n");
+            stringBuilder.append(str);
         } else {
             stringBuilder.append("|Конечная дата          | -");
             for (int i = 0; i < lengthOfFiles - 2; i++) {
                 stringBuilder.append(" ");
             }
-            stringBuilder.append("|\n");
+            stringBuilder.append(str);
         }
         stringBuilder.append("|Количество запросов    |" + countOfRequests);
         for (int i = String.valueOf(countOfRequests).length(); i < lengthOfFiles; i++) {
             stringBuilder.append(" ");
         }
-        stringBuilder.append("|\n");
+        stringBuilder.append(str);
         stringBuilder.append("|Средний размер ответа  |" + mediumSizeOfServerAns + "b");
         for (int i = String.valueOf(mediumSizeOfServerAns).length() + 1; i < lengthOfFiles; i++) {
             stringBuilder.append(" ");
         }
-        stringBuilder.append("|\n");
+        stringBuilder.append(str);
         return stringBuilder.toString();
     }
 
@@ -76,7 +86,7 @@ public class Renderer {
         int length = list.stream().map(mostRequestedResource
             -> mostRequestedResource.name().length()).max(Integer::compareTo).get();
         String resource = "|Ресурс";
-        for (int i = 5; i < length; i++) {
+        for (int i = FIVE; i < length; i++) {
             resource = resource + " ";
         }
         resource += "|Количество |\n";
@@ -96,10 +106,10 @@ public class Renderer {
                 tempRsource.append(" ");
             }
             tempRsource.append(" |" + array[i].count());
-            for (int j = String.valueOf(array[i].count()).length(); j < 11; j++) {
+            for (int j = String.valueOf(array[i].count()).length(); j < ELEVEN; j++) {
                 tempRsource.append(" ");
             }
-            tempRsource.append("|\n");
+            tempRsource.append(str);
         }
         stringBuilder.append(tempRsource.toString());
         return stringBuilder.toString();
@@ -113,9 +123,8 @@ public class Renderer {
         stringBuilder.append("|----|------------------------------|-----------|\n");
         LogAnalyzer.MostFrequentCode[] array = new LogAnalyzer.MostFrequentCode[list.size()];
         list.toArray(array);
-        for (LogAnalyzer.MostFrequentCode code:
-             array) {
-            stringBuilder.append("|" + code.statusCode().getCode() + " |" +code.statusCode());
+        for (LogAnalyzer.MostFrequentCode code: array) {
+            stringBuilder.append("|" + code.statusCode().getCode() + " |" + code.statusCode());
             for (int i = code.statusCode().toString().length(); i < 30; i++) {
                 stringBuilder.append(" ");
             }

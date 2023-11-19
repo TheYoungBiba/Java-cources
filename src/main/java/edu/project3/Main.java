@@ -1,14 +1,15 @@
 package edu.project3;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Main {
+    private Main() {}
+
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static void main(String[] args) throws IOException {
@@ -30,6 +31,7 @@ public class Main {
                     format = Format.valueOf(args[i + 1]);
                     break;
                 }
+                default: throw new IllegalArgumentException();
             }
         }
         LogAnalyzer analyzer = new LogAnalyzer(listOfPath, from, to);
