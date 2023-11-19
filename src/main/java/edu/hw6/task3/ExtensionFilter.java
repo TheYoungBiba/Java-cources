@@ -1,10 +1,13 @@
 package edu.hw6.task3;
 
-public interface ExtensionFilter extends AbstractFilter {
+import java.nio.file.FileSystems;
+import java.nio.file.PathMatcher;
+
+public interface ExtensionFilter extends AbstractFilter{
     static AbstractFilter globMatches(String glob) {
-        if (!glob.matches("^\\*\\.\\w+$")) {
-            throw new IllegalArgumentException("Incorrect glob.");
-        }
-        return path -> path.getFileName().toString().matches(glob);
+        return path -> {
+            PathMatcher matcher = FileSystems.getDefault().getPathMatcher("glob:" + glob);
+            return matcher.matches(path.getFileName());
+        };
     }
 }

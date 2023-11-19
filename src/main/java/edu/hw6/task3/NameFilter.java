@@ -1,7 +1,14 @@
 package edu.hw6.task3;
 
-public interface NameFilter extends AbstractFilter {
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public interface NameFilter extends AbstractFilter{
     static AttributeFilter regexContains(String regEx) {
-        return path -> path.getFileName().toString().matches(regEx);
+        Pattern pattern = Pattern.compile(regEx);
+        return path -> {
+            Matcher matcher = pattern.matcher(path.getFileName().toString());
+            return matcher.find();
+        };
     }
 }
