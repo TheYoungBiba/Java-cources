@@ -1,5 +1,8 @@
 package edu.project3;
 
+import edu.project3.LogRecord.ConnectionType;
+import edu.project3.LogRecord.HttpStatusCode;
+import edu.project3.LogRecord.ProtocolVersion;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,8 +19,6 @@ public class LogAnalyzer {
     private final ZonedDateTime from;
 
     private final ZonedDateTime to;
-
-    private final int three = 3;
 
     public LogAnalyzer(List<Path> paths, ZonedDateTime from, ZonedDateTime to) {
         this.paths = paths;
@@ -39,13 +40,11 @@ public class LogAnalyzer {
         for (Path path: paths) {
             count += getStreamOfLogs(path).count();
             size = getStreamOfLogs(path).reduce(size, (aLong, logRecord) -> aLong + logRecord.byteSize(), Long::sum);
-//            size += getStreamOfLogs(path).mapToLong(LogRecord::byteSize).sum();
         }
         return size / count;
     }
 
-
-    public List<MostRequestedResource> determinateMostRequestedResources() throws IOException {
+    public List<AnalyzeCounter> determinateMostRequestedResources() throws IOException {
         HashMap<String, Long> resources = new HashMap<>();
         for (Path path: paths) {
             getStreamOfLogs(path)
@@ -58,17 +57,10 @@ public class LogAnalyzer {
                     }
                 });
         }
-        return resources.entrySet().stream().sorted(new Comparator<Map.Entry<String, Long>>() {
-                @Override
-                public int compare(Map.Entry<String, Long> o1, Map.Entry<String, Long> o2) {
-                    return Long.compare(o1.getValue(), o2.getValue());
-                }
-            }.reversed())
-            .limit(three)
-            .map(stringLongEntry -> new MostRequestedResource(stringLongEntry.getKey(), stringLongEntry.getValue()))
-            .toList();
+        return toSortedLimitList(resources);
     }
 
+    @SuppressWarnings("MagicNumber")
     public List<MostFrequentCode> determinateMostFrequentCode() throws IOException {
         HashMap<Integer, Long> codes = new HashMap<>();
         for (Path path: paths) {
@@ -82,17 +74,44 @@ public class LogAnalyzer {
                     }
                 });
         }
-        return codes.entrySet().stream().sorted(new Comparator<Map.Entry<Integer, Long>>() {
-                @Override
-                public int compare(Map.Entry<Integer, Long> o1, Map.Entry<Integer, Long> o2) {
-                    return Long.compare(o1.getValue(), o2.getValue());
-                }
-            }.reversed())
-            .limit(three)
+        return codes.entrySet().stream()
+            .sorted(new LogCmp<Integer>().reversed())
+            .limit(3)
             .map(integerLongEntry -> new MostFrequentCode(toEnumVal(integerLongEntry.getKey()),
                 integerLongEntry.getValue()))
             .toList();
+    }
 
+    public List<AnalyzeCounter> determinateMostFrequentConnectionType() throws IOException {
+        HashMap<ConnectionType, Long> connections = new HashMap<>();
+        for (Path path: paths) {
+            getStreamOfLogs(path)
+                .forEach(logRecord -> {
+                    ConnectionType connection = logRecord.request().connectionType();
+                    if (!connections.containsKey(connection)) {
+                        connections.put(connection, 1L);
+                    } else {
+                        connections.put(connection, connections.get(connection) + 1);
+                    }
+                });
+        }
+        return toSortedLimitList(connections);
+    }
+
+    public List<AnalyzeCounter> determinateMostFrequentProtocolVersion() throws IOException {
+        Map<ProtocolVersion, Long> versions = new HashMap<>();
+        for (Path path: paths) {
+            getStreamOfLogs(path)
+                .forEach(logRecord -> {
+                    ProtocolVersion version = logRecord.request().version();
+                    if (!versions.containsKey(version)) {
+                        versions.put(version, 1L);
+                    } else {
+                        versions.put(version, versions.get(version) + 1);
+                    }
+                });
+        }
+        return toSortedLimitList(versions);
     }
 
     private Stream<LogRecord> getStreamOfLogs(Path path) throws IOException {
@@ -116,8 +135,8 @@ public class LogAnalyzer {
             .filter(logRecord -> logRecord.dateOfRequest().isAfter(from) && logRecord.dateOfRequest().isBefore(to));
     }
 
-    private LogRecord.HttpStatusCode toEnumVal(int code) {
-        for (LogRecord.HttpStatusCode enumCode: LogRecord.HttpStatusCode.values()) {
+    private HttpStatusCode toEnumVal(int code) {
+        for (HttpStatusCode enumCode: HttpStatusCode.values()) {
             if (enumCode.getCode() == code) {
                 return enumCode;
             }
@@ -125,8 +144,24 @@ public class LogAnalyzer {
         throw new RuntimeException("Unknown code");
     }
 
-    public record MostRequestedResource(String name, long count) {}
+    @SuppressWarnings("MagicNumber")
+    private <T> List<AnalyzeCounter> toSortedLimitList(Map<T, Long> counterMap) {
+        return counterMap.entrySet().stream()
+            .sorted(new LogCmp<T>().reversed())
+            .limit(3)
+            .map(tLongEntry -> new AnalyzeCounter(tLongEntry.getKey(),
+                tLongEntry.getValue()))
+            .toList();
+    }
 
+    private class LogCmp<T> implements Comparator<Map.Entry<T, Long>> {
+        @Override
+        public int compare(Map.Entry<T, Long> o1, Map.Entry<T, Long> o2) {
+            return Long.compare(o1.getValue(), o2.getValue());
+        }
+    }
+
+    public record AnalyzeCounter<T>(T t, long count) {}
 
     public record MostFrequentCode(LogRecord.HttpStatusCode statusCode, long count) {}
 }

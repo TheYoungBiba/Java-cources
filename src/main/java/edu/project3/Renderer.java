@@ -1,6 +1,7 @@
 package edu.project3;
 
-import edu.project3.LogAnalyzer.MostRequestedResource;
+import edu.project3.LogAnalyzer.AnalyzeCounter;
+import edu.project3.LogAnalyzer.MostFrequentCode;
 import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -9,7 +10,6 @@ import java.util.Objects;
 public class Renderer {
     private Renderer() {}
 
-    @SuppressWarnings("magicnumber")
     public static String mainInformationRender(List<Path> listOfPath, ZonedDateTime from, ZonedDateTime to,
         long countOfRequests, long mediumSizeOfServerAns) {
         final int lengthOfValueName = 8;
@@ -33,11 +33,11 @@ public class Renderer {
                 .filter(Objects::nonNull)
                 .max(Integer::compareTo)
                 .get();
-        render.append(stringLengthLeveler("|Метрика               |Значение", maxLength));
-        render.append("\n");
-        render.append(getLine("|----------------------|", maxLength));
-        render.append("\n");
-        render.append(fileNames);
+        render.append(stringLengthLeveler("|Метрика               |Значение", maxLength))
+        .append("\n")
+        .append(getLine("|----------------------|", maxLength))
+        .append("\n")
+        .append(fileNames);
         if (from != null) {
             render.append(stringLengthLeveler("|Начальная дата        |" + from, maxLength));
             render.append("\n");
@@ -60,55 +60,60 @@ public class Renderer {
         return render.toString();
     }
 
-    @SuppressWarnings("magicnumber")
-    public static String resourcesRender(List<MostRequestedResource> listOfResources) {
-        StringBuilder render = new StringBuilder("#### Запрашиваемые ресурсы\n\n");
-        final int lengthOfResourceName = 6;
-        final int lengthOfCountName = 10;
-        int maxLengthOfResource = listOfResources.stream()
-            .map(mostRequestedResource -> mostRequestedResource.name().length())
+    public static String twoColumnRender(
+        List<AnalyzeCounter> listOfCounters, String mainAnnotation, String firstColumnName,
+        String secondColumnName) {
+        StringBuilder render = new StringBuilder("#### " + mainAnnotation + "\n\n");
+        int maxLengthOfFirstColumnValue = listOfCounters.stream()
+            .map(analyzeCounter -> analyzeCounter.t().toString().length())
             .max(Integer::compareTo)
             .get();
-        maxLengthOfResource = Math.max(maxLengthOfResource, lengthOfResourceName);
-        long maxCounter = listOfResources.stream()
-            .map(MostRequestedResource::count)
+        maxLengthOfFirstColumnValue = Math.max(maxLengthOfFirstColumnValue, firstColumnName.length());
+        long maxLengthOfSecondColumnValue = listOfCounters.stream()
+            .map(AnalyzeCounter::count)
             .max(Long::compareTo)
             .get();
-        int maxLengthOfCounter = Math.max(String.valueOf(maxCounter).length() + 1, lengthOfCountName);
-        int fullLength = maxLengthOfResource + maxLengthOfCounter + 4;
-        render.append(stringLengthLeveler(stringLengthLeveler(
-            "|Ресурс", maxLengthOfResource + 2) + "Количество",
-            fullLength));
-        render.append("\n");
-        render.append(getLine(getLine("|", maxLengthOfResource + 2), fullLength));
-        render.append("\n");
-        for (MostRequestedResource resource: listOfResources.toArray(new MostRequestedResource[0])) {
-            render.append(stringLengthLeveler(
-                stringLengthLeveler("|" + resource.name(), maxLengthOfResource + 2)
-                    + resource.count(), fullLength));
-            render.append("\n");
+        maxLengthOfSecondColumnValue = Math.max(String.valueOf(maxLengthOfSecondColumnValue).length() + 1,
+            secondColumnName.length());
+        final int shiftToUncheckedPositions = 4;
+        int fullLength = maxLengthOfFirstColumnValue + ((int) maxLengthOfSecondColumnValue) + shiftToUncheckedPositions;
+        render.append(stringLengthLeveler(stringLengthLeveler("|" + firstColumnName,
+                maxLengthOfFirstColumnValue + 2) + secondColumnName, fullLength))
+            .append("\n")
+            .append(getLine(getLine("|", maxLengthOfFirstColumnValue + 2), fullLength))
+            .append("\n");
+        for (AnalyzeCounter counter: listOfCounters.toArray(new AnalyzeCounter[0])) {
+            render.append(stringLengthLeveler(stringLengthLeveler("|" + counter.t(),
+                    maxLengthOfFirstColumnValue + 2) + counter.count(), fullLength))
+            .append("\n");
         }
         return render.toString();
     }
 
-    @SuppressWarnings("magicnumber")
-    public static String codeRenderer(List<LogAnalyzer.MostFrequentCode> list) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("#### Коды ответа\n\n");
-        stringBuilder.append("|Код |Имя                           |Количество |\n");
-        stringBuilder.append("|----|------------------------------|-----------|\n");
-        LogAnalyzer.MostFrequentCode[] array = new LogAnalyzer.MostFrequentCode[list.size()];
-        list.toArray(array);
-        for (LogAnalyzer.MostFrequentCode code: array) {
-            stringBuilder.append("|" + code.statusCode().getCode() + " |" + code.statusCode());
-            for (int i = code.statusCode().toString().length(); i < 30; i++) {
-                stringBuilder.append(" ");
-            }
-            stringBuilder.append("|" + code.count());
-            for (int i = String.valueOf(code.count()).length(); i < 11; i++) {
-                stringBuilder.append(" ");
-            }
-            stringBuilder.append("|\n");
+    public static String codeRender(List<MostFrequentCode> listOfCodes) {
+        StringBuilder stringBuilder = new StringBuilder("#### Коды ответа\n\n");
+        int maxLengthOfCodeName = listOfCodes.stream()
+            .map(httpStatusCodeAnalyzeCounter -> httpStatusCodeAnalyzeCounter.statusCode().toString().length())
+            .max(Integer::compareTo).get();
+        int maxCounterLength = listOfCodes.stream()
+            .map(httpStatusCodeAnalyzeCounter -> String.valueOf(httpStatusCodeAnalyzeCounter.count()).length())
+            .max(Integer::compareTo).get();
+        final int lengthOfFirstColumn = 6;
+        final int lengthOfSecondColumnName = 3;
+        int lengthOfTwoFirstColumns = lengthOfFirstColumn + Math.max(maxLengthOfCodeName, lengthOfSecondColumnName) + 1;
+        final int lengthOfCountNameColumn = 10;
+        int fullLength = lengthOfTwoFirstColumns + Math.max(maxCounterLength, lengthOfCountNameColumn) + 2;
+        stringBuilder.append(stringLengthLeveler(stringLengthLeveler("|Код |Имя", lengthOfTwoFirstColumns)
+                    + "Количество", fullLength))
+        .append("\n");
+        stringBuilder.append(getLine(getLine("|----|---", lengthOfTwoFirstColumns), fullLength))
+        .append("\n");
+        MostFrequentCode[] mostFrequentCodes = new MostFrequentCode[listOfCodes.size()];
+        listOfCodes.toArray(mostFrequentCodes);
+        for (MostFrequentCode code: mostFrequentCodes) {
+            stringBuilder.append(stringLengthLeveler(stringLengthLeveler("|" + code.statusCode().getCode()
+                    + " |" + code.statusCode(), lengthOfTwoFirstColumns) + code.count(), fullLength))
+            .append("\n");
         }
         return stringBuilder.toString();
     }
