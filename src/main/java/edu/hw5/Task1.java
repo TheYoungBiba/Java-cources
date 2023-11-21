@@ -13,15 +13,15 @@ public class Task1 {
             .append(":00Z").toString());
     }
 
-    private static EndBegin toInstantFormat(String session) {
+    private static Session toInstantFormat(String session) {
         final String separator =  " - ";
         final int shiftToEndingPart = 3;
         String beginning = session.substring(0, session.indexOf(separator));
         String ending = session.substring(session.indexOf(separator) + shiftToEndingPart);
-        return new EndBegin(getInstant(beginning), getInstant(ending));
+        return new Session(getInstant(beginning), getInstant(ending));
     }
 
-    private static Collection<EndBegin> toInstantList(Collection<String> sessions) {
+    private static Collection<Session> toInstantList(Collection<String> sessions) {
         return sessions.stream()
             .map(Task1::toInstantFormat)
             .toList();
@@ -36,9 +36,9 @@ public class Task1 {
         if (!isValidInput(sessions)) {
             throw new IllegalArgumentException("Incorrect format of session.");
         }
-        Collection<EndBegin> listOfSessions = toInstantList(sessions);
-        Duration allDurations = listOfSessions.stream().reduce(Duration.ZERO, (duration, endBegin) -> {
-            return duration.plus(Duration.between(endBegin.beginning, endBegin.ending));
+        Collection<Session> listOfSessions = toInstantList(sessions);
+        Duration allDurations = listOfSessions.stream().reduce(Duration.ZERO, (duration, session) -> {
+            return duration.plus(Duration.between(session.beginning, session.ending));
         }, Duration::plus);
         Duration medianDuration = allDurations.dividedBy(sessions.size());
         return new StringBuilder()
@@ -48,5 +48,5 @@ public class Task1 {
             .append('м').toString();
     }
 
-    private record EndBegin(Instant beginning, Instant ending) {}
+    private record Session(Instant beginning, Instant ending) {}
 }
