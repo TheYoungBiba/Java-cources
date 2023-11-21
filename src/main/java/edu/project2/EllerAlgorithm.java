@@ -16,6 +16,23 @@ public class EllerAlgorithm implements Generator {
         random = new Random();
     }
 
+    @Override
+    public int[][] generateMaze(int rows, int cols) {
+        sets = new int[rows][cols];
+        preRenderedGrid = new int[2 * rows + 1][2 * cols + 1];
+        initPreRenderedGrid();
+        initSetsInFirstLine();
+        generateRightWalls(0);
+        generateBottomWalls(0);
+        for (int row = 1; row < sets.length; row++) {
+            initNewLine(row);
+            generateRightWalls(row);
+            generateBottomWalls(row);
+        }
+        finalizeMaze();
+        return preRenderedGrid;
+    }
+
     private void initPreRenderedGrid() {
         for (int i = 0; i < preRenderedGrid.length; i++) {
             preRenderedGrid[i][0] = 1;
@@ -113,23 +130,6 @@ public class EllerAlgorithm implements Generator {
                 mergeSets(sets.length - 1, sets[sets.length - 1][i + 1], sets[sets.length - 1][i]);
             }
         }
-    }
-
-    @Override
-    public int[][] generateMaze(int rows, int cols) {
-        sets = new int[rows][cols];
-        preRenderedGrid = new int[2 * rows + 1][2 * cols + 1];
-        initPreRenderedGrid();
-        initSetsInFirstLine();
-        generateRightWalls(0);
-        generateBottomWalls(0);
-        for (int row = 1; row < sets.length; row++) {
-            initNewLine(row);
-            generateRightWalls(row);
-            generateBottomWalls(row);
-        }
-        finalizeMaze();
-        return preRenderedGrid;
     }
 }
 

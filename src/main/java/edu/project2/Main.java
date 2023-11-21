@@ -17,7 +17,7 @@ public class Main {
         final Coordinate exitInRightBottom = new Coordinate(10, 9);
         Maze maze = new Maze(new EllerAlgorithm(randomSeedForMyMaze), squareSideLength, squareSideLength);
         maze.setPoints(startOnLeftTop, exitInRightBottom);
-        List<Coordinate> path = new PathFinder(maze).solve();
+        List<Coordinate> path = new BFS(maze).solve();
         String render = new RenderMaze().render(maze);
         String renderPath = new RenderMaze().render(maze, path);
         LOGGER.info(render);

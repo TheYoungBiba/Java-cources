@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class PathFinderTest {
+public class BFSTest {
     private static Stream<Arguments> provideArgumentsSolveTest() {
         Maze testCase1 = new Maze(new EllerAlgorithm(11), 5, 5);
         testCase1.setPoints(new Coordinate(0, 1), new Coordinate(10, 9));
@@ -92,7 +92,7 @@ public class PathFinderTest {
     @ParameterizedTest
     @MethodSource("provideArgumentsSolveTest")
     void solveTest(Maze testCase, List<Coordinate> referent) {
-        assertEquals(referent, new PathFinder(testCase).solve());
+        assertEquals(referent, new BFS(testCase).solve());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class PathFinderTest {
         Maze testCase = new Maze(new EllerAlgorithm(11), 5, 5);
         testCase.setExitPoint(new Coordinate(10, 9));
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
-            new PathFinder(testCase);
+            new BFS(testCase);
         });
         assertEquals("There is no start position in maze.", e.getMessage());
     }
@@ -110,7 +110,7 @@ public class PathFinderTest {
         Maze testCase = new Maze(new EllerAlgorithm(11), 5, 5);
         testCase.setStartPoint(new Coordinate(0, 1));
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
-            new PathFinder(testCase);
+            new BFS(testCase);
         });
         assertEquals("There is no exit position in maze.", e.getMessage());
     }
