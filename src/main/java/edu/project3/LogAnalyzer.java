@@ -25,27 +25,6 @@ public class LogAnalyzer {
         this.to = to;
     }
 
-    private Stream<LogRecord> getStreamOfLogs(Path path) throws IOException {
-        LogParser logParser = new NginxLogParser();
-        List<String> listOfLines = Files.readAllLines(path);
-        if (from == null && to == null) {
-            return listOfLines.stream().map(logParser::parseLine);
-        }
-        if (to == null) {
-            return listOfLines.stream()
-                .map(logParser::parseLine)
-                .filter(logRecord -> logRecord.dateOfRequest().isAfter(from));
-        }
-        if (from == null) {
-            return listOfLines.stream()
-                .map(logParser::parseLine)
-                .filter(logRecord -> logRecord.dateOfRequest().isBefore(to));
-        }
-        return listOfLines.stream()
-            .map(logParser::parseLine)
-            .filter(logRecord -> logRecord.dateOfRequest().isAfter(from) && logRecord.dateOfRequest().isBefore(to));
-    }
-
     public long countOfRequests() throws IOException {
         long count = 0;
         for (Path path: paths) {
@@ -114,6 +93,27 @@ public class LogAnalyzer {
                 integerLongEntry.getValue()))
             .toList();
 
+    }
+
+    private Stream<LogRecord> getStreamOfLogs(Path path) throws IOException {
+        LogParser logParser = new NginxLogParser();
+        List<String> listOfLines = Files.readAllLines(path);
+        if (from == null && to == null) {
+            return listOfLines.stream().map(logParser::parseLine);
+        }
+        if (to == null) {
+            return listOfLines.stream()
+                .map(logParser::parseLine)
+                .filter(logRecord -> logRecord.dateOfRequest().isAfter(from));
+        }
+        if (from == null) {
+            return listOfLines.stream()
+                .map(logParser::parseLine)
+                .filter(logRecord -> logRecord.dateOfRequest().isBefore(to));
+        }
+        return listOfLines.stream()
+            .map(logParser::parseLine)
+            .filter(logRecord -> logRecord.dateOfRequest().isAfter(from) && logRecord.dateOfRequest().isBefore(to));
     }
 
     private LogRecord.HttpStatusCode toEnumVal(int code) {
