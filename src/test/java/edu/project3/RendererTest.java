@@ -56,6 +56,7 @@ public class RendererTest {
     void codeRenderTest() {
         String referent =
             "#### Коды ответа\n\n" +
+
             "|Код |Имя          |Количество |\n" +
             "|----|-------------|-----------|\n" +
             "|404 |NOT_FOUND    |54580      |\n" +
