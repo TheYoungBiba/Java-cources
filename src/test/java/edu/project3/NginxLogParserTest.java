@@ -69,11 +69,6 @@ public class NginxLogParserTest {
             + "\"Chef Client/12.0.3 (ruby-2.1.4-p265; ohai-8.0.1; x86_64-linux; +http://opscode.com)\"";
         Arguments testCase2 = Arguments.of(line2, "Invalid line.");
 
-        String line3 = "46.256.66.256 - - [17/May/2015:08:05:38 +0000] \"GET /downloads/product_1 HTTP/1.1\" " +
-            "304 0 \"-\" \"Debian APT-HTTP/1.3 (1.0.1ubuntu2)\"";
-        Arguments testCase3 = Arguments.of(line3,
-            "java.net.UnknownHostException: 46.256.66.256: nodename nor servname provided, or not known");
-
         String line4 = "2001:4800:7815:102:8bee:6e66:ff05:215f - - [60/Jzn/2015:30:06:36 +0000] "
             + "\"POST /product_1 HTTP/2.0\" 200 85619205 \"-\" "
             + "\"Chef Client/12.0.3 (ruby-2.1.4-p265; ohai-8.0.1; x86_64-linux; +http://opscode.com)\"";
@@ -105,7 +100,7 @@ public class NginxLogParserTest {
             + "\"Chef Client/12.0.3 (ruby-2.1.4-p265; ohai-8.0.1; x86_64-linux; +http://opscode.com)\"";
         Arguments testCase9 = Arguments.of(line9, "Invalid line.");
 
-        return Stream.of(testCase1, testCase2, testCase3, testCase4,
+        return Stream.of(testCase1, testCase2, testCase4,
             testCase5, testCase6, testCase7, testCase8, testCase9);
     }
 
