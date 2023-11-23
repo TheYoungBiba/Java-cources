@@ -14,49 +14,50 @@ public class Renderer {
         long countOfRequests, long mediumSizeOfServerAns) {
         final int lengthOfValueName = 8;
         StringBuilder render = new StringBuilder("#### Общая информация\n\n");
-        StringBuilder fileNames = new StringBuilder("|Файл(-ы)              |");
+        StringBuilder fileNames = new StringBuilder();
         Path[] arrayOfPath = listOfPath.toArray(new Path[0]);
         for (Path value : arrayOfPath) {
             fileNames.append(value.getFileName());
             fileNames.append(", ");
         }
-        fileNames.delete(fileNames.length() - 2, fileNames.length() - 1);
-        fileNames.append("|\n");
+        fileNames.delete(fileNames.length() - 2, fileNames.length());
         List<Integer> listOfMaxLengths = List.of(
-            fileNames.length() - 2,
+            fileNames.length(),
             from != null ? from.toString().length() : 0,
             to != null ? to.toString().length() : 0,
             String.valueOf(countOfRequests).length(),
             String.valueOf(mediumSizeOfServerAns).length() + 1,
             lengthOfValueName);
+        final int firstColumnLength = 24;
         int maxLength = listOfMaxLengths.stream()
                 .filter(Objects::nonNull)
                 .max(Integer::compareTo)
-                .get();
+                .get() + firstColumnLength + 1;
         render.append(stringLengthLeveler("|Метрика               |Значение", maxLength))
         .append("\n")
         .append(getLine("|----------------------|", maxLength))
         .append("\n")
-        .append(fileNames);
+        .append(stringLengthLeveler("|Файл(-ы)              |" + fileNames, maxLength))
+        .append("\n");
         if (from != null) {
-            render.append(stringLengthLeveler("|Начальная дата        |" + from, maxLength));
-            render.append("\n");
+            render.append(stringLengthLeveler("|Начальная дата        |" + from, maxLength))
+            .append("\n");
         } else {
-            render.append(stringLengthLeveler("|Начальная дата        | - ", maxLength));
-            render.append("\n");
+            render.append(stringLengthLeveler("|Начальная дата        | - ", maxLength))
+            .append("\n");
         }
         if (to != null) {
-            render.append(stringLengthLeveler("|Конечная дата         |" + to, maxLength));
-            render.append("\n");
+            render.append(stringLengthLeveler("|Конечная дата         |" + to, maxLength))
+            .append("\n");
         } else {
-            render.append(stringLengthLeveler("|Конечная дата         | - ", maxLength));
-            render.append("\n");
+            render.append(stringLengthLeveler("|Конечная дата         | - ", maxLength))
+            .append("\n");
         }
-        render.append(stringLengthLeveler("|Количество запросов   |" + countOfRequests, maxLength));
-        render.append("\n");
-        render.append(stringLengthLeveler("|Средний размер ответа |" + mediumSizeOfServerAns + "b",
-            maxLength));
-        render.append("\n");
+        render.append(stringLengthLeveler("|Количество запросов   |" + countOfRequests, maxLength))
+        .append("\n")
+        .append(stringLengthLeveler("|Средний размер ответа |" + mediumSizeOfServerAns + "b",
+            maxLength))
+        .append("\n");
         return render.toString();
     }
 
