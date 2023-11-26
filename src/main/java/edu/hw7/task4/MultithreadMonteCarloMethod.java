@@ -1,7 +1,10 @@
 package edu.hw7.task4;
 
+import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MultithreadMonteCarloMethod implements MonteCarloMethod {
     private final AtomicLong totalCount = new AtomicLong();
@@ -13,6 +16,8 @@ public class MultithreadMonteCarloMethod implements MonteCarloMethod {
     private final double width;
 
     private final double radius;
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     public MultithreadMonteCarloMethod(double radius) {
         cores = Runtime.getRuntime().availableProcessors();
@@ -26,6 +31,7 @@ public class MultithreadMonteCarloMethod implements MonteCarloMethod {
         width = 2;
     }
 
+    @SuppressWarnings("MagicNumber")
     @Override
     public double calculatePI(long exactness) {
         Thread[] threads = new Thread[cores];
@@ -41,7 +47,7 @@ public class MultithreadMonteCarloMethod implements MonteCarloMethod {
                 thread.join();
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Arrays.stream(e.getStackTrace()).forEach(LOGGER::info);
         }
         return 4D * (((double) circleCount.get()) / ((double) totalCount.get()));
     }

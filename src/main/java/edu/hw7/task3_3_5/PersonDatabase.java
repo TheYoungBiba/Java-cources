@@ -16,9 +16,9 @@ public interface PersonDatabase {
 
     Map<Integer, Person> getIdMap();
 
-    public Map<String, Person> getNameMap();
+    Map<String, Person> getNameMap();
 
-    public Map<String, Person> getAddressMap();
+    Map<String, Person> getAddressMap();
 
-    public Map<String, Person> getPhoneMap();
+    Map<String, Person> getPhoneMap();
 }

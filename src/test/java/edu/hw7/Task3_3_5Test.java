@@ -38,7 +38,8 @@ public class Task3_3_5Test {
         });
     }
 
-    private static Thread getFindByAddressTestThread(PersonDatabase testDatabase, List<Person> listAddress, String address) {
+    private static Thread getFindByAddressTestThread(PersonDatabase testDatabase, List<Person> listAddress,
+        String address) {
         return new Thread(() -> {
             listAddress.addAll(testDatabase.findByAddress(address));
         });
@@ -158,7 +159,7 @@ public class Task3_3_5Test {
         for (int i = 0; i < 4; i++) {
             testThreads[i] = getFindByNameTestThread(test, listName, "name" + (i + 1));
         }
-        for(Thread thread: testThreads) {
+        for (Thread thread: testThreads) {
             thread.start();
         }
         try {
@@ -200,11 +201,11 @@ public class Task3_3_5Test {
         for (int i = 0; i < 4; i++) {
             testThreads[i] = getFindByAddressTestThread(test, listAddress, "address" + (i + 1));
         }
-        for(Thread thread: testThreads) {
+        for (Thread thread: testThreads) {
             thread.start();
         }
         try {
-            for(Thread thread: testThreads) {
+            for (Thread thread: testThreads) {
                 thread.join();
             }
         } catch (InterruptedException e) {

@@ -4,9 +4,10 @@ public class Benchmark {
     private Benchmark() {}
 
 
+    @SuppressWarnings("MagicNumber")
     public static double speedIncrease() {
         long duration = 0;
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
             long exectness = ((long) (1000_000 * Math.pow(10, i)));
             long multithreadStart = System.currentTimeMillis();
             new MultithreadMonteCarloMethod().calculatePI(exectness);
@@ -22,6 +23,7 @@ public class Benchmark {
 
 
 
+    @SuppressWarnings("MagicNumber")
     public static double delta(long simulations) {
         double delta = 0;
         for (int i = 0; i < 10; i++) {

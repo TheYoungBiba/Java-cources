@@ -5,8 +5,10 @@ import java.util.stream.LongStream;
 public class Task2 {
     private Task2() {}
 
+    private static final int FACTORIAL_MAX_COMPUTABLE_VALUE = 20;
+
     public static long factorial(int n) {
-        if (n > 20) {
+        if (n > FACTORIAL_MAX_COMPUTABLE_VALUE) {
             throw new IllegalArgumentException("Too big value.");
         }
 

@@ -23,6 +23,7 @@ public class SingleThreadMonteCarloMethod implements MonteCarloMethod {
         width = 2;
     }
 
+    @SuppressWarnings("MagicNumber")
     @Override
     public double calculatePI(long exactness) {
         for (long i = 0; i < exactness; i++) {
