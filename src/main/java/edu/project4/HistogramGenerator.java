@@ -23,6 +23,7 @@ public class HistogramGenerator {
         this.transforms = transforms;
     }
 
+    @SuppressWarnings("MagicNumber")
     public HistogramGenerator(int width, int height) {
         this.width = width;
         this.height = height;

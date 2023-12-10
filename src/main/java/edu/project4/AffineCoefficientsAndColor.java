@@ -4,25 +4,28 @@ import java.awt.Color;
 import java.util.Random;
 
 public record AffineCoefficientsAndColor(double a, double b, double c, double d, double e, double f, Color color) {
+    private final static int MAX_RGB_VALUE = 255;
+
     public static AffineCoefficientsAndColor getCoefficients() {
-        double a = getRandomVal(1.5);
-        double b = getRandomVal(1.5);
-        double c = getRandomVal(3.5);
-        double d = getRandomVal(1.5);
-        double e = getRandomVal(1.5);
-        double f = getRandomVal(3.5);
+        final double defaultRange = 1.5;
+        double a = getRandomVal(defaultRange);
+        double b = getRandomVal(defaultRange);
+        double c = getRandomVal(defaultRange + 2);
+        double d = getRandomVal(defaultRange);
+        double e = getRandomVal(defaultRange);
+        double f = getRandomVal(defaultRange + 2);
         while (!isValidCoefficients(a, b, d, e)) {
-            a = getRandomVal(1.5);
-            b = getRandomVal(1.5);
-            d = getRandomVal(1.5);
-            e = getRandomVal(1.5);
+            a = getRandomVal(defaultRange);
+            b = getRandomVal(defaultRange);
+            d = getRandomVal(defaultRange);
+            e = getRandomVal(defaultRange);
         }
         Random random = new Random();
         return new AffineCoefficientsAndColor(a, b, c, d, e, f,
             new Color(
-                random.nextInt(0, 256),
-                random.nextInt(0, 256),
-                random.nextInt(0, 256)
+                random.nextInt(0, MAX_RGB_VALUE + 1),
+                random.nextInt(0, MAX_RGB_VALUE + 1),
+                random.nextInt(0, MAX_RGB_VALUE + 1)
             )
         );
     }
@@ -43,9 +46,9 @@ public record AffineCoefficientsAndColor(double a, double b, double c, double d,
         Random random = new Random();
         return new AffineCoefficientsAndColor(a, b, c, d, e, f,
             new Color(
-                random.nextInt(0, 256),
-                random.nextInt(0, 256),
-                random.nextInt(0, 256)
+                random.nextInt(0, MAX_RGB_VALUE + 1),
+                random.nextInt(0, MAX_RGB_VALUE + 1),
+                random.nextInt(0, MAX_RGB_VALUE + 1)
             )
         );
     }
