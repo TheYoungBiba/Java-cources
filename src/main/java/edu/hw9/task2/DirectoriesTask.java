@@ -41,14 +41,14 @@ public class DirectoriesTask extends RecursiveTask<List<Path>> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        List<Path> result = new ArrayList<>();
+        List<Path> listOfPath = new ArrayList<>();
         for (var task : tasks) {
-            result.addAll(task.join());
+            listOfPath.addAll(task.join());
             filesInRoot += task.getFilesInRoot();
         }
         if (filesInRoot > minFilesCount) {
-            result.add(root);
+            listOfPath.add(root);
         }
-        return result;
+        return listOfPath;
     }
 }

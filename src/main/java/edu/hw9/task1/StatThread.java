@@ -16,6 +16,5 @@ public class StatThread implements Runnable {
     @Override
     public void run() {
         collector.push(metricName, data);
-        System.out.println(Thread.currentThread().getName() + "pushed");
     }
 }

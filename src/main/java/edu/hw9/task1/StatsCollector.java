@@ -14,24 +14,8 @@ class StatsCollector implements Collector {
     private Map<String, Double> minValues = new HashMap<>();
 
     public void push(String metricName, double[] data) {
-//        if (sums.containsKey(metricName) || counts.containsKey(metricName) || maxValues.containsKey(metricName)
-//        || minValues.containsKey(metricName)) {
-//            throw new RuntimeException("Collusion of HashMap.");
-//        } else {
-//            sums.put(metricName, new DoubleAdder());
-//            counts.put(metricName, new DoubleAdder());
-//            for (double value: data) {
-//                sums.get(metricName).add(value);
-//                counts.get(metricName).add(1);
-//                maxValues.put(metricName, Math.max(maxValues.getOrDefault(metricName,
-//                    Double.NEGATIVE_INFINITY), value));
-//                minValues.put(metricName, Math.min(minValues.getOrDefault(metricName,
-//                    Double.POSITIVE_INFINITY), value));
-//            }
-//        }
         sums.putIfAbsent(metricName, new DoubleAdder());
         counts.putIfAbsent(metricName, new DoubleAdder());
-
         for (double value: data) {
             sums.get(metricName).add(value);
             counts.get(metricName).add(1);
@@ -39,7 +23,6 @@ class StatsCollector implements Collector {
             maxValues.put(metricName, Math.max(maxValues.getOrDefault(metricName, Double.NEGATIVE_INFINITY), value));
             minValues.put(metricName, Math.min(minValues.getOrDefault(metricName, Double.POSITIVE_INFINITY), value));
         }
-
     }
 
     public Map<String, Double> getStats() {
