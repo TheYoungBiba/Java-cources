@@ -38,7 +38,7 @@ public class Client {
                 LOGGER.info("Server: " + in.readLine());
             }
         } catch (IOException e) {
-            LOGGER.info(Arrays.toString(e.getStackTrace()));
+            LOGGER.error(Arrays.toString(e.getStackTrace()));
         }
     }
 }

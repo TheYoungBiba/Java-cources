@@ -40,7 +40,7 @@ public class LocalServer implements Runnable {
             }
             client.close();
         } catch (IOException e) {
-            LOGGER.info("Request processing error.");
+            LOGGER.error("Request processing error.");
         }
     }
 }
