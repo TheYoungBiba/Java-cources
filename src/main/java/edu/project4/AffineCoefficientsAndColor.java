@@ -2,7 +2,7 @@ package edu.project4;
 
 import java.util.Random;
 
-public record AffineCoefficientsAndColor (
+public record AffineCoefficientsAndColor(
     double a,
     double b,
     double c,

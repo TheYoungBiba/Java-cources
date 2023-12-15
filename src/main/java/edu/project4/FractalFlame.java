@@ -5,6 +5,7 @@ public class FractalFlame {
     private final int width;
     private final int height;
 
+    @SuppressWarnings("ParameterNumber")
     public FractalFlame(
         int width,
         int height,

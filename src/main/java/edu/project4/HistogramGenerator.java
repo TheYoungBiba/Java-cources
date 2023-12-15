@@ -1,7 +1,5 @@
 package edu.project4;
 
-import java.util.List;
-
 public interface HistogramGenerator {
     Pixel[][] generate(
         int width,

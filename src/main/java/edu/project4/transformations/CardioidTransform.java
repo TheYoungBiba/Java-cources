@@ -6,9 +6,9 @@ import edu.project4.Transformation;
 public class CardioidTransform implements Transformation {
     @Override
     public Point apply(Point point) {
-        double sqrtOfQuadXY = Math.sqrt(Math.pow(point.x(), 2) + Math.pow(point.y(), 2));
-        double x = sqrtOfQuadXY * Math.sin(sqrtOfQuadXY * Math.atan(point.y() / point.x()));
-        double y = -sqrtOfQuadXY * Math.cos(sqrtOfQuadXY * Math.atan(point.y() / point.x()));
-        return new Point(x, y);
+        double r = Math.pow(point.x(), 2) + Math.pow(point.y(), 2);
+        double k = Math.sqrt(r);
+        double arcTan = Math.atan2(point.y(), point.x());
+        return new Point(k * Math.sin(k * arcTan), -k * Math.cos(k * arcTan));
     }
 }
