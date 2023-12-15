@@ -36,6 +36,3 @@ public class Main {
         System.out.println(end - start);
     }
 }
-
-//2026
-//10178
