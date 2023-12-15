@@ -12,7 +12,6 @@ public class Main {
 
     @SuppressWarnings("MagicNumber")
     public static void main(String[] args) {
-        long start = System.currentTimeMillis();
         FractalFlame flame = new FractalFlame(
             3840,
             2160,
@@ -27,12 +26,10 @@ public class Main {
             new SinTransform(),
             new PolarTransform()
         );
-        long end = System.currentTimeMillis();
         FlameRenderer.render(
             FlameRenderer.logarithmicGammaCorrection(flame, 0.2),
             "png",
             Path.of("src", "main", "java", "edu", "project4", "images")
         );
-        System.out.println(end - start);
     }
 }
