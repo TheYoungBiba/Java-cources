@@ -1,42 +1,41 @@
 package edu.project4;
 
+import edu.project4.transformations.CardioidTransform;
+import edu.project4.transformations.DiscTransform;
+import edu.project4.transformations.PolarTransform;
+import edu.project4.transformations.SinTransform;
+import edu.project4.transformations.SphereTransform;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Main {
     private Main() {}
 
     public static void main(String[] args) throws IOException {
-//        System.out.println(new Random().nextInt(4, 17));
-//        System.out.println(-1.5 + 3 * new Random().nextDouble());
-//        System.out.println(new Random().nextDouble());
-//        Random random = new Random();
-//        System.out.println(1.5 * random.nextDouble() * Math.pow(-1, random.nextInt(0, 2)));
-//        System.out.println(random.nextInt(0, 2));
-//        AffineCoefficientsAndColor testCase = AffineCoefficientsAndColor.getCoefficient(1.5);
-//        System.out.println(Math.pow(testCase.a(), 2) + Math.pow(testCase.d(), 2));
-//        System.out.println(Math.pow(testCase.b(), 2) + Math.pow(testCase.e(), 2));
-//        System.out.println(Math.pow(testCase.a(), 2) + Math.pow(testCase.d(), 2) + Math.pow(testCase.b(), 2)
-//        + Math.pow(testCase.e(), 2));
-//        System.out.println(Math.pow(testCase.a() * testCase.e() - testCase.b() * testCase.d(), 2));
-//        System.out.println(AffineCoefficientsAndColor.getCoefficient().color());
-//        BufferedImage image = new BufferedImage(1000, 1000, BufferedImage.TYPE_INT_RGB);
-//        Random random = new Random();
-//        for (int i = 0; i < 1000; i++) {
-//            for (int j = 0; j < 1000; j++) {
-//                image.setRGB(
-////                    random.nextInt(0, 256),
-//                    255,
-////                    random.nextInt(0, 256),
-//                    255,
-////                    random.nextInt(0, 256)
-//                    0
-//                );
-//            }
-//        }
-//        Path path = Path.of("testImage.jpg");
-////        ImageIO.write(image, "jpg", path.toFile());
-//        System.out.println(AffineCoefficientsAndColor.getCoefficients().transformByCoefficients(new Point(3, 5)));
-//        System.out.println(new SphereTransform().andThen(new SinTransform()).apply(new Point(3, 5)));
-//        System.out.println(((double) 1920 / 1080));
+        FlameRenderer.render(
+            new FractalFlame(
+                3840,
+                2160,
+                new MultithreadHistogramGenerator(),
+                100,
+                110_000,
+                3,
+                10,
+                new CardioidTransform(),
+                new DiscTransform(),
+                new SphereTransform(),
+                new SinTransform(),
+                new PolarTransform()
+            ),
+            "png",
+            Path.of("src", "main", "resources")
+        );
+//        Point point = new Point(0.3454435, -0.12443);
+//        point = new StandardHistogramGenerator().rotate(point, (Math.PI*2)/3);
+//        System.out.println(point);
     }
 }
