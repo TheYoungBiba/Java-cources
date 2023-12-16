@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("MultiplestringLiterals")
 public class DiskMap implements Map<String, String> {
-    private final String COLON = ":";
+    private final String colon = ":";
     private static int diskNameCounter = 1;
     private Path disk;
     private Map<String, String> diskMap;
@@ -82,14 +82,14 @@ public class DiskMap implements Map<String, String> {
         }
         diskMap = listOfEntry
             .stream()
-            .map(string -> string.split(COLON))
+            .map(string -> string.split(colon))
             .collect(Collectors.toMap(strings -> strings[0], strings -> strings[1]));
     }
 
     private void saveDiskMap() throws IOException {
         StringBuilder tempDiskContainer = new StringBuilder();
         diskMap.entrySet().stream()
-            .map(stringStringEntry -> stringStringEntry.getKey() + COLON + stringStringEntry.getValue())
+            .map(stringStringEntry -> stringStringEntry.getKey() + colon + stringStringEntry.getValue())
             .forEach(tempDiskContainer::append);
         Files.writeString(disk, tempDiskContainer.toString());
     }
