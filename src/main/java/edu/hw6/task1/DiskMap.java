@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("MultiplestringLiterals")
 public class DiskMap implements Map<String, String> {
+    private final String COLON = ":";
     private static int diskNameCounter = 1;
     private Path disk;
     private Map<String, String> diskMap;
@@ -30,7 +31,8 @@ public class DiskMap implements Map<String, String> {
                 .filter(path -> path.getFileName().toString().matches("^disk\\d+.txt$"))
                 .map(path -> {
                     String fileName = path.getFileName().toString();
-                    return Integer.parseInt(String.valueOf(fileName.charAt(fileName.length() - shiftToDiscNumber)));
+                    Character charNumber = fileName.charAt(fileName.length() - shiftToDiscNumber);
+                    return Integer.parseInt(charNumber.toString());
                 })
                 .max(Comparator.comparingInt(Integer::intValue))
                 .get() + 1;
@@ -80,14 +82,14 @@ public class DiskMap implements Map<String, String> {
         }
         diskMap = listOfEntry
             .stream()
-            .map(string -> string.split(":"))
+            .map(string -> string.split(COLON))
             .collect(Collectors.toMap(strings -> strings[0], strings -> strings[1]));
     }
 
     private void saveDiskMap() throws IOException {
         StringBuilder tempDiskContainer = new StringBuilder();
         diskMap.entrySet().stream()
-            .map(stringStringEntry -> stringStringEntry.getKey() + ":" + stringStringEntry.getValue())
+            .map(stringStringEntry -> stringStringEntry.getKey() + COLON + stringStringEntry.getValue())
             .forEach(tempDiskContainer::append);
         Files.writeString(disk, tempDiskContainer.toString());
     }
