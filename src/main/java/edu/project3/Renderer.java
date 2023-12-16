@@ -34,30 +34,30 @@ public class Renderer {
                 .max(Integer::compareTo)
                 .get() + firstColumnLength + 1;
         render.append(stringLengthLeveler("|Метрика               |Значение", maxLength))
-        .append("\n")
+        .append(System.lineSeparator())
         .append(getLine("|----------------------|", maxLength))
-        .append("\n")
+        .append(System.lineSeparator())
         .append(stringLengthLeveler("|Файл(-ы)              |" + fileNames, maxLength))
-        .append("\n");
+        .append(System.lineSeparator());
         if (from != null) {
             render.append(stringLengthLeveler("|Начальная дата        |" + from, maxLength))
-            .append("\n");
+            .append(System.lineSeparator());
         } else {
             render.append(stringLengthLeveler("|Начальная дата        | - ", maxLength))
-            .append("\n");
+            .append(System.lineSeparator());
         }
         if (to != null) {
             render.append(stringLengthLeveler("|Конечная дата         |" + to, maxLength))
-            .append("\n");
+            .append(System.lineSeparator());
         } else {
             render.append(stringLengthLeveler("|Конечная дата         | - ", maxLength))
-            .append("\n");
+            .append(System.lineSeparator());
         }
         render.append(stringLengthLeveler("|Количество запросов   |" + countOfRequests, maxLength))
-        .append("\n")
+        .append(System.lineSeparator())
         .append(stringLengthLeveler("|Средний размер ответа |" + mediumSizeOfServerAns + "b",
             maxLength))
-        .append("\n");
+        .append(System.lineSeparator());
         return render.toString();
     }
 
@@ -80,13 +80,13 @@ public class Renderer {
         int fullLength = maxLengthOfFirstColumnValue + ((int) maxLengthOfSecondColumnValue) + shiftToUncheckedPositions;
         render.append(stringLengthLeveler(stringLengthLeveler("|" + firstColumnName,
                 maxLengthOfFirstColumnValue + 2) + secondColumnName, fullLength))
-            .append("\n")
+            .append(System.lineSeparator())
             .append(getLine(getLine("|", maxLengthOfFirstColumnValue + 2), fullLength))
-            .append("\n");
+            .append(System.lineSeparator());
         for (AnalyzeCounter counter: listOfCounters.toArray(new AnalyzeCounter[0])) {
             render.append(stringLengthLeveler(stringLengthLeveler("|" + counter.t(),
                     maxLengthOfFirstColumnValue + 2) + counter.count(), fullLength))
-            .append("\n");
+            .append(System.lineSeparator());
         }
         return render.toString();
     }
@@ -106,15 +106,15 @@ public class Renderer {
         int fullLength = lengthOfTwoFirstColumns + Math.max(maxCounterLength, lengthOfCountNameColumn) + 2;
         stringBuilder.append(stringLengthLeveler(stringLengthLeveler("|Код |Имя", lengthOfTwoFirstColumns)
                     + "Количество", fullLength))
-        .append("\n");
+        .append(System.lineSeparator());
         stringBuilder.append(getLine(getLine("|----|---", lengthOfTwoFirstColumns), fullLength))
-        .append("\n");
+        .append(System.lineSeparator());
         MostFrequentCode[] mostFrequentCodes = new MostFrequentCode[listOfCodes.size()];
         listOfCodes.toArray(mostFrequentCodes);
         for (MostFrequentCode code: mostFrequentCodes) {
             stringBuilder.append(stringLengthLeveler(stringLengthLeveler("|" + code.statusCode().getCode()
                     + " |" + code.statusCode(), lengthOfTwoFirstColumns) + code.count(), fullLength))
-            .append("\n");
+            .append(System.lineSeparator());
         }
         return stringBuilder.toString();
     }
