@@ -7,81 +7,80 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 import org.openjdk.jmh.annotations.Benchmark;
-import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Mode;
-import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.infra.Blackhole;
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.runner.options.TimeValue;
 
 @State(Scope.Thread)
-public class MethodBenchmark {
+public class ReflectionBenchmark {
+    public static void main(String[] args) throws RunnerException {
+        Options options = new OptionsBuilder()
+            .include(ReflectionBenchmark.class.getSimpleName())
+            .shouldFailOnError(true)
+            .shouldDoGC(true)
+            .mode(Mode.AverageTime)
+            .timeUnit(TimeUnit.NANOSECONDS)
+            .forks(1)
+            .warmupForks(1)
+            .warmupIterations(1)
+            .warmupTime(TimeValue.seconds(5))
+            .measurementIterations(1)
+            .measurementTime(TimeValue.minutes(2))
+            .build();
+        new Runner(options).run();
+    }
 
-    public static final int ITERATIONS = 10000;
 
-//    public static void main(String[] args) throws Exception {
-//        org.openjdk.jmh.Main.main(args);
-//    }
+    private Student student;
+    private Method method;
+    private MethodHandle methodHandle;
+    private Function function;
 
-//    @State(Scope.Benchmark)
-//    public static class BenchmarkState {
-        Student student = new Student("Alexander", "Biryukov");
-        Method directMethod;
+    @Setup
+    public void setup() throws Throwable {
+        student = new Student("Kirill", "Sakira");
+        method = Student.class.getMethod("name");
         MethodHandles.Lookup lookup = MethodHandles.lookup();
-        MethodHandle methodHandle;
-        MethodHandle setterHandle;
-
-        @Setup
-        public void setup() throws Throwable {
-            directMethod = Student.class.getMethod("name");
-            methodHandle = lookup.findVirtual(Student.class, "name", MethodType.methodType(String.class));
-            setterHandle = lookup.findSetter(Student.class, "name", String.class);
-        }
-//    }
-
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void testDirectAccess(BenchmarkState state, Blackhole blackhole) throws Exception {
-        for (int i = 0; i < ITERATIONS; i++) {
-            blackhole.consume(state.student.name());
-        }
-    }
-
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void testReflectiveAccess(BenchmarkState state, Blackhole blackhole) throws Throwable {
-        for (int i = 0; i < ITERATIONS; i++) {
-            blackhole.consume(state.directMethod.invoke(state.student));
-        }
-    }
-
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void testMethodHandles(BenchmarkState state, Blackhole blackhole) throws Throwable {
-        for (int i = 0; i < ITERATIONS; i++) {
-            blackhole.consume((String) state.methodHandle.invoke(state.student));
-        }
-    }
-
-    @Benchmark
-    @BenchmarkMode(Mode.AverageTime)
-    @OutputTimeUnit(TimeUnit.NANOSECONDS)
-    public void testLambdaMetafactory(BenchmarkState state, Blackhole blackhole) throws Throwable {
-        CallSite site = LambdaMetafactory.metafactory(
-            state.lookup,
-            "invoke",
-            MethodType.methodType(Runnable.class),
-            MethodType.methodType(String.class, Student.class),
-            state.methodHandle,
+        methodHandle = lookup.findVirtual(Student.class, "name", MethodType.methodType(String.class));
+        CallSite callSite = LambdaMetafactory.metafactory(
+            lookup,
+            "apply",
+            MethodType.methodType(Function.class),
+            MethodType.methodType(Object.class, Object.class),
+            methodHandle,
             MethodType.methodType(String.class, Student.class)
         );
-        for (int i = 0; i < ITERATIONS; i++) {
-            blackhole.consume((String) site.getTarget().invokeExact(state.student));
-        }
+        function = ((Function) callSite.getTarget().invokeExact());
     }
+
+    @Benchmark
+    public void directAccessTest(Blackhole blackhole) {
+        blackhole.consume(student.name());
+    }
+
+    @Benchmark
+    public void reflectiveAccessTest(Blackhole blackhole) throws Throwable {
+        blackhole.consume(method.invoke(student));
+    }
+
+    @Benchmark
+    public void methodHandleTest(Blackhole blackhole) throws Throwable {
+        blackhole.consume(methodHandle.invoke(student));
+    }
+
+    @Benchmark
+    public void lambdaMetafactoryTest(Blackhole blackhole) throws Throwable {
+        blackhole.consume(function.apply(student));
+    }
+
+    private record Student(String name, String surname) {}
 }
