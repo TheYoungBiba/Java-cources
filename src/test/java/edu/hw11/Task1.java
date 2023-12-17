@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import java.lang.reflect.Constructor;
 
 public class Task1 {
-    private final String helloByteBuddyMessage = "Hello, ByteBuddy!";
 
     @Test
     void creationOfNewClassWithBytes() throws Throwable {
+        final String helloByteBuddyMessage = "Hello, ByteBuddy!";
         Class<?> task1 = new ByteBuddy()
             .subclass(Object.class)
             .method(ElementMatchers.named("toString"))
