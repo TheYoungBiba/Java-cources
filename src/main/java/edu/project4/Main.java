@@ -10,6 +10,8 @@ import java.nio.file.Path;
 public class Main {
     private Main() {}
 
+//    TODO добавить пооержку задания цвета вручную
+
     @SuppressWarnings("MagicNumber")
     public static void main(String[] args) {
         FractalFlame flame = new FractalFlame(
