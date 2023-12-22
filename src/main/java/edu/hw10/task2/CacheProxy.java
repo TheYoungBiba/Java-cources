@@ -21,6 +21,10 @@ public class CacheProxy implements InvocationHandler {
         this.origin = origin;
     }
 
+    public static HashMap<String, Object> getCacheMap() {
+        return cacheMap;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> T create(T origin, Class<?> interfaceClass) {
         return (T) Proxy.newProxyInstance(
@@ -30,19 +34,13 @@ public class CacheProxy implements InvocationHandler {
         );
     }
 
-    public static HashMap<String, Object> getCacheMap() {
-        return cacheMap;
-    }
-
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        Cache cacheAnnotation = method.getAnnotation(Cache.class);
-        if (cacheAnnotation != null) {
+        if (method.getAnnotation(Cache.class) != null) {
             Object o;
-            String key = method.getName() + "(" + Arrays.deepToString(args) + ")";
-            if (cacheAnnotation.persist()) {
-                String cacheName = method.getName() + "_" + Arrays.deepToString(args) + ".txt";
-                Path cache = Path.of("src", "main", "java", "edu", "hw10", "task2", "cache", cacheName);
+            String key = getCacheName(method, args);
+            if (method.getAnnotation(Cache.class).persist()) {
+                Path cache = getCacechingPath(method, args);
                 if (Files.exists(cache)) {
                     try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(cache.toFile()))) {
                         o = inputStream.readObject();
@@ -67,5 +65,23 @@ public class CacheProxy implements InvocationHandler {
             return o;
         }
         return method.invoke(origin, args);
+    }
+
+    private String getCacheName(Method method, Object[] args) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder
+            .append(method.getName())
+            .append("(");
+        StringBuilder temp = new StringBuilder(Arrays.deepToString(args));
+        temp.deleteCharAt(0);
+        temp.deleteCharAt(temp.length() - 1);
+        stringBuilder.append(temp);
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+    }
+
+    private Path getCacechingPath(Method method, Object[] args) {
+        String name = getCacheName(method, args);
+        return Path.of("src", "main", "java", "edu", "hw10", "task2", "cache", name + ".txt");
     }
 }
