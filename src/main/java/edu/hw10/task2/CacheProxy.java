@@ -15,14 +15,14 @@ import java.util.HashMap;
 
 public class CacheProxy implements InvocationHandler {
     private final Object origin;
-    private final static HashMap<String, Object> cacheMap = new HashMap<>();
+    private final static HashMap<String, Object> CACHE_MAP = new HashMap<>();
 
     private CacheProxy(Object origin) {
         this.origin = origin;
     }
 
     public static HashMap<String, Object> getCacheMap() {
-        return cacheMap;
+        return CACHE_MAP;
     }
 
     @SuppressWarnings("unchecked")
@@ -56,11 +56,11 @@ public class CacheProxy implements InvocationHandler {
                         throw new RuntimeException();
                     }
                 }
-            } else if (cacheMap.containsKey(key)) {
-                o = cacheMap.get(key);
+            } else if (CACHE_MAP.containsKey(key)) {
+                o = CACHE_MAP.get(key);
             } else {
                 o = method.invoke(origin, args);
-                cacheMap.put(key, o);
+                CACHE_MAP.put(key, o);
             }
             return o;
         }
