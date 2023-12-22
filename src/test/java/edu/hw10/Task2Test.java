@@ -35,7 +35,7 @@ class Task2Test {
     }
 
     @Test
-    void SumPersistFalseTest() throws IOException {
+    void SumPersistTest() throws IOException {
         Path extistedPath = Path.of(cacheDir + "/sum([7, 9]).txt");
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(extistedPath.toFile()))) {
             out.writeObject(16);
