@@ -7,6 +7,7 @@ import net.bytebuddy.jar.asm.Label;
 import net.bytebuddy.jar.asm.MethodVisitor;
 import net.bytebuddy.jar.asm.Opcodes;
 
+@SuppressWarnings({"MultipleStringLiterals", "MagicNumber"})
 class FibonacciBCAppender implements ByteCodeAppender {
     @Override
     public Size apply(MethodVisitor methodVisitor, Implementation.Context context, MethodDescription methDescription) {
@@ -26,8 +27,7 @@ class FibonacciBCAppender implements ByteCodeAppender {
             "Fibonacci",
             "fib",
             "(I)J",
-            false)
-        ;
+            false);
         methodVisitor.visitVarInsn(Opcodes.ILOAD, 0);
         methodVisitor.visitInsn(Opcodes.ICONST_1);
         methodVisitor.visitInsn(Opcodes.ISUB);
